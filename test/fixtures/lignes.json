@@ -1,0 +1,236 @@
+{
+  "ok": true,
+  "objets": [
+    {
+      "libellePublic": "Hauts du Chazal <> Chalezeule",
+      "scolaire": false,
+      "modeTransport": 1,
+      "typologie": 10,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "id": "15-0",
+          "precisionDestination": ""
+        },
+        {
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "id": "15-1",
+          "precisionDestination": ""
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "101",
+      "numLignePublic": "T1",
+      "periurbain": false,
+      "couleurFond": "00A5C2"
+    },
+    {
+      "libellePublic": "Hauts du Chazal <> Gare Viotte",
+      "scolaire": false,
+      "modeTransport": 1,
+      "typologie": 10,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "id": "15-0",
+          "precisionDestination": ""
+        },
+        {
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "id": "15-1",
+          "precisionDestination": ""
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "102",
+      "numLignePublic": "T2",
+      "periurbain": false,
+      "couleurFond": "006D78"
+    },
+    {
+      "libellePublic": "Hauts du Chazal <> Chalezeule",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 30,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "id": "53-61",
+          "precisionDestination": ""
+        },
+        {
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "id": "53-62",
+          "precisionDestination": ""
+        }
+      ],
+      "couleurTexte": "FFF100",
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "periurbain": false,
+      "couleurFond": "1E191A"
+    },
+    {
+      "libellePublic": "Pôle Temis <> Centre-ville - 8 Septembre",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 20,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Centre-ville - 8 Septembre",
+          "id": "209-10",
+          "precisionDestination": "par Campus et Gare Viotte"
+        },
+        {
+          "sensAller": false,
+          "destination": "Pôle Temis",
+          "id": "209-14",
+          "precisionDestination": "par Gare Viotte et Campus"
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "3",
+      "numLignePublic": "L3",
+      "periurbain": false,
+      "couleurFond": "006AB3"
+    },
+    {
+      "libellePublic": "Châteaufarine <> Pôle Orchamps",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 20,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Pôle Orchamps",
+          "id": "172-3",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        },
+        {
+          "sensAller": true,
+          "destination": "Pôle Orchamps",
+          "id": "172-4",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        },
+        {
+          "sensAller": false,
+          "destination": "Châteaufarine",
+          "id": "172-0",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "4",
+      "numLignePublic": "L4",
+      "periurbain": false,
+      "couleurFond": "E2001A"
+    },
+    {
+      "libellePublic": "St Claude <> Bregille",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 20,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Bregille",
+          "id": "173-4",
+          "precisionDestination": "par Gare Viotte et République"
+        },
+        {
+          "sensAller": false,
+          "destination": "St Claude",
+          "id": "173-3",
+          "precisionDestination": "par République et Gare Viotte"
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "5",
+      "numLignePublic": "L5",
+      "periurbain": false,
+      "couleurFond": "1FA22E"
+    },
+    {
+      "libellePublic": "Centre-ville - Battant  <> Espace Valentin",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 30,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Centre-ville - Battant",
+          "id": "65-1",
+          "precisionDestination": "par Gare Viotte"
+        },
+        {
+          "sensAller": false,
+          "destination": "Espace Valentin",
+          "id": "65-0",
+          "precisionDestination": "par Gare Viotte"
+        }
+      ],
+      "couleurTexte": "FFFFFF",
+      "id": "8",
+      "numLignePublic": "8",
+      "periurbain": false,
+      "couleurFond": "00396B"
+    },
+    {
+      "libellePublic": "Pôle Chamars <> Citadelle",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 80,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Citadelle",
+          "id": "83-1",
+          "precisionDestination": ""
+        },
+        {
+          "sensAller": false,
+          "destination": "Pôle Chamars",
+          "id": "83-2",
+          "precisionDestination": ""
+        }
+      ],
+      "couleurTexte": "ffffff",
+      "id": "27",
+      "numLignePublic": "Ginko Citadelle",
+      "periurbain": false,
+      "couleurFond": "F26522"
+    },
+    {
+      "libellePublic": "Marchaux Chaudefontaine <> Pôle Orchamps",
+      "scolaire": false,
+      "modeTransport": 0,
+      "typologie": 50,
+      "variantes": [
+        {
+          "sensAller": true,
+          "destination": "Besançon - Pôle Orchamps",
+          "id": "121-0",
+          "precisionDestination": ""
+        },
+        {
+          "sensAller": false,
+          "destination": "Marchaux Chaudefontaine",
+          "id": "121-1",
+          "precisionDestination": ""
+        }
+      ],
+      "couleurTexte": "D2528B",
+      "id": "71",
+      "numLignePublic": "71",
+      "periurbain": true,
+      "couleurFond": "FFFFFF"
+    }
+  ]
+}

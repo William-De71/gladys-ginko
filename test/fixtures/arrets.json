@@ -1,0 +1,173 @@
+{
+  "ok": true,
+  "objets": [
+    {
+      "accessibilite": 1,
+      "latitude": 47.2378,
+      "id": "HUITSEP1",
+      "intemperie": false,
+      "nom": "8 Septembre",
+      "longitude": 6.024275
+    },
+    {
+      "accessibilite": 0,
+      "latitude": 47.228558,
+      "id": "BRULARD1",
+      "intemperie": false,
+      "nom": "Brulard",
+      "longitude": 6.006567
+    },
+    {
+      "accessibilite": 0,
+      "latitude": 47.228237,
+      "id": "BRULARD2",
+      "intemperie": false,
+      "nom": "Brulard",
+      "longitude": 6.004476
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.228474,
+      "id": "t_brula1",
+      "intemperie": false,
+      "nom": "Brulard",
+      "longitude": 6.0059133
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.228462,
+      "id": "t_brula2",
+      "intemperie": false,
+      "nom": "Brulard",
+      "longitude": 6.005575
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.233418,
+      "id": "CHAMARS1",
+      "intemperie": false,
+      "nom": "Chamars",
+      "longitude": 6.020035
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.233383,
+      "id": "CHAMARS2",
+      "intemperie": false,
+      "nom": "Chamars",
+      "longitude": 6.019651
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.23371,
+      "id": "CHAMCITA",
+      "intemperie": false,
+      "nom": "Chamars",
+      "longitude": 6.01982
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.233738,
+      "id": "t_cham1",
+      "intemperie": false,
+      "nom": "Chamars",
+      "longitude": 6.0203433
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.233673,
+      "id": "t_cham2",
+      "intemperie": false,
+      "nom": "Chamars",
+      "longitude": 6.0202494
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.24618,
+      "id": "GAREVIO1",
+      "intemperie": false,
+      "nom": "Gare Viotte",
+      "longitude": 6.022168
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.246204,
+      "id": "GAREVIO2",
+      "intemperie": false,
+      "nom": "Gare Viotte",
+      "longitude": 6.021949
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.24635,
+      "id": "t_gvio1",
+      "intemperie": false,
+      "nom": "Gare Viotte",
+      "longitude": 6.021987
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.246326,
+      "id": "t_gvio2",
+      "intemperie": false,
+      "nom": "Gare Viotte",
+      "longitude": 6.0221725
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.222363,
+      "id": "ILDFRAN1",
+      "intemperie": false,
+      "nom": "Ile de France",
+      "longitude": 5.966775
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.222557,
+      "id": "ILDFRAN3",
+      "intemperie": false,
+      "nom": "Ile de France",
+      "longitude": 5.9668436
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.221825,
+      "id": "t_idf1",
+      "intemperie": false,
+      "nom": "Ile de France",
+      "longitude": 5.967356
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.222034,
+      "id": "t_idf2",
+      "intemperie": false,
+      "nom": "Ile de France",
+      "longitude": 5.9672446
+    },
+    {
+      "accessibilite": 0,
+      "latitude": 47.24107,
+      "id": "REPUBL2",
+      "intemperie": false,
+      "nom": "République",
+      "longitude": 6.026592
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.240894,
+      "id": "t_repu1",
+      "intemperie": false,
+      "nom": "République",
+      "longitude": 6.0271482
+    },
+    {
+      "accessibilite": 1,
+      "latitude": 47.240948,
+      "id": "t_repu2",
+      "intemperie": false,
+      "nom": "République",
+      "longitude": 6.0270724
+    }
+  ]
+}

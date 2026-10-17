@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="534" viewBox="0 0 800 534">
+  <!-- Cover of the Ginko integration for Gladys Assistant (illustration, not
+       the logo of Ginko). A tram of Besançon at dusk, in front of a screen of
+       the stops announcing the next passages. Built into cover.jpg by
+       scripts/build-cover.sh. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f1b33"/>
+      <stop offset="0.6" stop-color="#27406b"/>
+      <stop offset="1" stop-color="#d98c5f"/>
+    </linearGradient>
+    <linearGradient id="tram" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1fc0db"/>
+      <stop offset="1" stop-color="#00859c"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe9f2"/>
+      <stop offset="1" stop-color="#5aa8bb"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141a24"/>
+      <stop offset="1" stop-color="#0b0f16"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="534" fill="url(#sky)"/>
+
+  <!-- the Citadel hill and the roofs of the old town -->
+  <path d="M0 300 C 120 250, 220 230, 330 250 C 420 266, 470 240, 560 236 C 660 232, 720 262, 800 270 L800 534 L0 534 Z" fill="#1c2c45"/>
+  <path d="M0 330 L40 330 L40 300 L70 284 L100 300 L100 330 L150 330 L150 292 L190 292 L190 330 L240 330 L240 270 L256 254 L272 270 L272 330 L330 330 L330 300 L380 300 L380 330 L800 330 L800 534 L0 534 Z" fill="#16233a"/>
+  <g fill="#f5c46b" opacity="0.8">
+    <rect x="52" y="306" width="8" height="10"/><rect x="80" y="306" width="8" height="10"/>
+    <rect x="160" y="302" width="8" height="10"/><rect x="174" y="302" width="8" height="10"/>
+    <rect x="250" y="286" width="8" height="10"/><rect x="342" y="310" width="8" height="10"/>
+  </g>
+
+  <!-- platform and rails -->
+  <rect x="0" y="430" width="800" height="104" fill="#2a2f3a"/>
+  <rect x="0" y="424" width="800" height="8" fill="#9aa3b2"/>
+  <rect x="0" y="470" width="800" height="5" fill="#5d6574"/>
+  <rect x="0" y="500" width="800" height="5" fill="#5d6574"/>
+
+  <!-- the tram -->
+  <g>
+    <path d="M30 300 L470 300 C 500 300, 520 318, 528 340 L540 400 C 542 412, 534 420, 522 420 L30 420 Z" fill="url(#tram)"/>
+    <rect x="30" y="400" width="510" height="20" fill="#006b7d"/>
+    <g fill="url(#glass)">
+      <rect x="50" y="318" width="70" height="52" rx="6"/>
+      <rect x="135" y="318" width="70" height="52" rx="6"/>
+      <rect x="220" y="318" width="70" height="52" rx="6"/>
+      <rect x="305" y="318" width="70" height="52" rx="6"/>
+      <rect x="390" y="318" width="64" height="52" rx="6"/>
+      <path d="M468 318 L494 318 C 506 318, 514 328, 517 340 L522 370 L468 370 Z"/>
+    </g>
+    <rect x="30" y="380" width="510" height="6" fill="#ffffff" opacity="0.6"/>
+    <rect x="456" y="306" width="40" height="8" rx="2" fill="#ffd34d"/>
+    <circle cx="530" cy="404" r="5" fill="#fff4c2"/>
+    <g fill="#1d2129">
+      <circle cx="110" cy="424" r="13"/><circle cx="150" cy="424" r="13"/>
+      <circle cx="400" cy="424" r="13"/><circle cx="440" cy="424" r="13"/>
+    </g>
+    <path d="M250 300 L290 262 L330 300" fill="none" stroke="#1d2129" stroke-width="4"/>
+    <rect x="0" y="252" width="800" height="3" fill="#1d2129"/>
+  </g>
+
+  <!-- screen of the stop -->
+  <g>
+    <rect x="566" y="96" width="8" height="330" fill="#3b4250"/>
+    <rect x="470" y="40" width="300" height="200" rx="14" fill="url(#screen)" stroke="#4b5566" stroke-width="3"/>
+    <text x="490" y="78" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" font-weight="bold" fill="#ffffff">Gare Viotte</text>
+    <g font-family="DejaVu Sans, Arial, sans-serif" font-size="16" fill="#e9eef5">
+      <rect x="490" y="98" width="40" height="26" rx="5" fill="#006d78"/>
+      <text x="510" y="117" text-anchor="middle" font-weight="bold" fill="#ffffff">T2</text>
+      <text x="540" y="117">Hauts du Chazal</text>
+      <text x="750" y="117" text-anchor="end" fill="#7ee2a8" font-weight="bold">1 min</text>
+      <rect x="490" y="140" width="40" height="26" rx="5" fill="#006ab3"/>
+      <text x="510" y="159" text-anchor="middle" font-weight="bold" fill="#ffffff">L3</text>
+      <text x="540" y="159">Pôle Temis</text>
+      <text x="750" y="159" text-anchor="end" fill="#7ee2a8" font-weight="bold">10 min</text>
+      <rect x="490" y="182" width="40" height="26" rx="5" fill="#1fa22e"/>
+      <text x="510" y="201" text-anchor="middle" font-weight="bold" fill="#ffffff">L5</text>
+      <text x="540" y="201">Bregille</text>
+      <text x="750" y="201" text-anchor="end" fill="#7ee2a8" font-weight="bold">17 min</text>
+    </g>
+  </g>
+
+  <!-- title -->
+  <g font-family="DejaVu Sans, Arial, sans-serif">
+    <text x="36" y="92" font-size="64" font-weight="bold" fill="#ffffff">Ginko</text>
+    <text x="38" y="132" font-size="24" fill="#d6e4f5">Besançon · bus &amp; tram</text>
+    <text x="38" y="166" font-size="20" fill="#9fc4e8">for Gladys Assistant</text>
+  </g>
+</svg>

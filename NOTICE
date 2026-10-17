@@ -1,0 +1,14 @@
+Gladys Ginko integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The passages, lines, stops and traffic messages come from the open data API of
+the Ginko network (https://api.ginko.voyage), run by Keolis Besançon Mobilités
+for Grand Besançon Métropole, under the Open Database License (ODbL 1.0):
+https://opendatacommons.org/licenses/odbl/1-0/. The widgets show the source
+(Ginko) and the time of each reading. The files under test/fixtures are
+extracts of this database, kept under the same licence.
+
+This community integration is not affiliated with, endorsed or sponsored by
+Ginko, Keolis Besançon Mobilités or Grand Besançon Métropole.

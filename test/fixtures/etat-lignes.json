@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "objets": [
+    {
+      "idLigne": "101",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "T1",
+      "couleurFond": "00A5C2",
+      "etat": 5
+    },
+    {
+      "idLigne": "102",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "T2",
+      "couleurFond": "006D78",
+      "etat": 5
+    },
+    {
+      "idLigne": "110",
+      "couleurTexte": "FFF100",
+      "numLignePublic": "Plan B",
+      "couleurFond": "1E191A",
+      "etat": 3
+    },
+    {
+      "idLigne": "3",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "L3",
+      "couleurFond": "006AB3",
+      "etat": 5
+    },
+    {
+      "idLigne": "4",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "L4",
+      "couleurFond": "E2001A",
+      "etat": 6
+    },
+    {
+      "idLigne": "5",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "L5",
+      "couleurFond": "1FA22E",
+      "etat": 5
+    },
+    {
+      "idLigne": "8",
+      "couleurTexte": "FFFFFF",
+      "numLignePublic": "8",
+      "couleurFond": "00396B",
+      "etat": 5
+    },
+    {
+      "idLigne": "27",
+      "couleurTexte": "ffffff",
+      "numLignePublic": "Ginko Citadelle",
+      "couleurFond": "F26522",
+      "etat": 4
+    },
+    {
+      "idLigne": "71",
+      "couleurTexte": "D2528B",
+      "numLignePublic": "71",
+      "couleurFond": "FFFFFF",
+      "etat": 5
+    }
+  ]
+}
