@@ -228,6 +228,12 @@
         "fr": "Arrêt 3",
         "de": "Haltestelle 3",
         "es": "Parada 3"
+      },
+      "description": {
+        "en": "More stops (a home, a workplace…): the \"Add a stop\" button, under the form, follows up to 20 more, \"List the stops\" shows them all, numbered, and \"Remove a stop\" stops following one.",
+        "fr": "Plus d’arrêts (domicile, travail…) : le bouton « Ajouter un arrêt », sous le formulaire, en suit jusqu’à 20 de plus, « Lister les arrêts » les montre tous, numérotés, et « Retirer un arrêt » arrête d’en suivre un.",
+        "de": "Mehr Haltestellen (Zuhause, Arbeit…): Die Schaltfläche „Haltestelle hinzufügen“ unter dem Formular verfolgt bis zu 20 weitere, „Haltestellen auflisten“ zeigt sie alle nummeriert, und „Haltestelle entfernen“ beendet das Verfolgen einer Haltestelle.",
+        "es": "Más paradas (casa, trabajo…): el botón «Añadir una parada», bajo el formulario, sigue hasta 20 más, «Listar las paradas» las muestra todas, numeradas, y «Quitar una parada» deja de seguir una."
       }
     },
     {
@@ -490,10 +496,10 @@
         "es": "Buscar una parada"
       },
       "description": {
-        "en": "Gives the exact names of the stops holding these words, and the id of each side of the street.",
-        "fr": "Donne les noms exacts des arrêts contenant ces mots, et l’identifiant de chaque côté de la rue.",
-        "de": "Liefert die genauen Namen der Haltestellen mit diesen Wörtern und die Kennung jeder Straßenseite.",
-        "es": "Da los nombres exactos de las paradas que contienen estas palabras, y el identificador de cada lado de la calle."
+        "en": "Gives the exact names of the stops holding these words, the id of each side of the street and the directions served there.",
+        "fr": "Donne les noms exacts des arrêts contenant ces mots, l’identifiant de chaque côté de la rue et les directions qui y sont desservies.",
+        "de": "Liefert die genauen Namen der Haltestellen mit diesen Wörtern, die Kennung jeder Straßenseite und die dort bedienten Fahrtrichtungen.",
+        "es": "Da los nombres exactos de las paradas que contienen estas palabras, el identificador de cada lado de la calle y las direcciones que allí se sirven."
       },
       "timeout_seconds": 30,
       "fields": [
@@ -515,6 +521,150 @@
           "required": true
         }
       ]
+    },
+    {
+      "key": "add_stop",
+      "label": {
+        "en": "Add a stop",
+        "fr": "Ajouter un arrêt",
+        "de": "Haltestelle hinzufügen",
+        "es": "Añadir una parada"
+      },
+      "description": {
+        "en": "Follows one more stop, beyond the three of the form: up to 20 more. Its device is then offered in the Discover tab.",
+        "fr": "Suit un arrêt de plus, au-delà des trois du formulaire : jusqu’à 20 de plus. Son appareil est ensuite proposé dans l’onglet Découvrir.",
+        "de": "Verfolgt eine weitere Haltestelle über die drei des Formulars hinaus: bis zu 20 weitere. Ihr Gerät wird danach im Tab Entdecken angeboten.",
+        "es": "Sigue una parada más, además de las tres del formulario: hasta 20 más. Su dispositivo se ofrece después en la pestaña Descubrir."
+      },
+      "timeout_seconds": 60,
+      "fields": [
+        {
+          "key": "stop",
+          "type": "string",
+          "label": {
+            "en": "Stop",
+            "fr": "Arrêt",
+            "de": "Haltestelle",
+            "es": "Parada"
+          },
+          "description": {
+            "en": "Its name for both sides of the street, or an id for one side (\"Find a stop\").",
+            "fr": "Son nom pour les deux côtés de la rue, ou un identifiant pour un seul côté (« Chercher un arrêt »).",
+            "de": "Ihr Name für beide Straßenseiten oder eine Kennung für eine Seite („Haltestelle suchen“).",
+            "es": "Su nombre para ambos lados de la calle, o un identificador para un lado («Buscar una parada»)."
+          },
+          "placeholder": {
+            "en": "BQTSO01",
+            "fr": "BQTSO01",
+            "de": "BQTSO01",
+            "es": "BQTSO01"
+          },
+          "required": true
+        },
+        {
+          "key": "line",
+          "type": "string",
+          "label": {
+            "en": "Line",
+            "fr": "Ligne",
+            "de": "Linie",
+            "es": "Línea"
+          },
+          "description": {
+            "en": "Empty for every line.",
+            "fr": "Vide pour toutes les lignes.",
+            "de": "Leer für alle Linien.",
+            "es": "Vacío para todas las líneas."
+          },
+          "placeholder": {
+            "en": "T1",
+            "fr": "T1",
+            "de": "T1",
+            "es": "T1"
+          },
+          "required": false
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction",
+            "fr": "Direction",
+            "de": "Richtung",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "Words of the destination. Empty for both directions.",
+            "fr": "Mots de la destination. Vide pour les deux sens.",
+            "de": "Wörter des Ziels. Leer für beide Richtungen.",
+            "es": "Palabras del destino. Vacío para ambos sentidos."
+          },
+          "placeholder": {
+            "en": "Chalezeule",
+            "fr": "Chalezeule",
+            "de": "Chalezeule",
+            "es": "Chalezeule"
+          },
+          "required": false
+        }
+      ]
+    },
+    {
+      "key": "remove_stop",
+      "label": {
+        "en": "Remove a stop",
+        "fr": "Retirer un arrêt",
+        "de": "Haltestelle entfernen",
+        "es": "Quitar una parada"
+      },
+      "description": {
+        "en": "Stops following a stop added with the button. Its device stays in Gladys until you delete it.",
+        "fr": "Arrête de suivre un arrêt ajouté avec le bouton. Son appareil reste dans Gladys jusqu’à ce que vous le supprimiez.",
+        "de": "Beendet das Verfolgen einer mit der Schaltfläche hinzugefügten Haltestelle. Ihr Gerät bleibt in Gladys, bis du es löschst.",
+        "es": "Deja de seguir una parada añadida con el botón. Su dispositivo sigue en Gladys hasta que lo borres."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "stop",
+          "type": "string",
+          "label": {
+            "en": "Stop",
+            "fr": "Arrêt",
+            "de": "Haltestelle",
+            "es": "Parada"
+          },
+          "description": {
+            "en": "Its number in \"List the stops\", or its name.",
+            "fr": "Son numéro dans « Lister les arrêts », ou son nom.",
+            "de": "Ihre Nummer in „Haltestellen auflisten“ oder ihr Name.",
+            "es": "Su número en «Listar las paradas», o su nombre."
+          },
+          "placeholder": {
+            "en": "4",
+            "fr": "4",
+            "de": "4",
+            "es": "4"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "list_stops",
+      "label": {
+        "en": "List the stops",
+        "fr": "Lister les arrêts",
+        "de": "Haltestellen auflisten",
+        "es": "Listar las paradas"
+      },
+      "description": {
+        "en": "Shows every followed stop, numbered: the three of the form, then the ones added with the button.",
+        "fr": "Montre tous les arrêts suivis, numérotés : les trois du formulaire, puis ceux ajoutés avec le bouton.",
+        "de": "Zeigt alle verfolgten Haltestellen nummeriert: die drei des Formulars, dann die mit der Schaltfläche hinzugefügten.",
+        "es": "Muestra todas las paradas seguidas, numeradas: las tres del formulario y luego las añadidas con el botón."
+      },
+      "timeout_seconds": 10
     },
     {
       "key": "diagnostic",
@@ -1516,10 +1666,16 @@
           "key": "count",
           "type": "number",
           "label": {
-            "en": "Passages shown",
-            "fr": "Passages affichés",
-            "de": "Angezeigte Abfahrten",
-            "es": "Pasos mostrados"
+            "en": "Routes shown",
+            "fr": "Trajets affichés",
+            "de": "Angezeigte Fahrten",
+            "es": "Trayectos mostrados"
+          },
+          "description": {
+            "en": "One row per line and destination, with its next passages.",
+            "fr": "Une ligne par ligne de bus et destination, avec ses prochains passages.",
+            "de": "Eine Zeile pro Linie und Ziel, mit ihren nächsten Abfahrten.",
+            "es": "Una fila por línea y destino, con sus próximos pasos."
           },
           "min": 1,
           "max": 8,

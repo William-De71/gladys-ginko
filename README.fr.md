@@ -17,11 +17,11 @@ Documentation utilisateur : [English](docs/en.md) · [Français](docs/fr.md) · 
 
 ## Fonctionnalités
 
-- **Un appareil par arrêt suivi** (trois au plus), saisi par son nom — les deux côtés de la rue — ou par son identifiant — un seul côté — et filtré par **ligne** et **direction** : prochain passage, attente des deux prochains passages, passages sans desserte.
+- **Un appareil par arrêt suivi** (trois dans le formulaire, jusqu’à 20 de plus avec le bouton **Ajouter un arrêt**), saisi par son nom — les deux côtés de la rue — ou par son identifiant — un seul côté — et filtré par **ligne** et **direction** : prochain passage, attente des deux prochains passages, passages sans desserte.
 - **Un appareil par ligne suivie** (six au plus) : son trafic (normal, perturbé, interrompu…) et les perturbations en cours.
 - **5 déclencheurs de scène**, **2 actions de scène** et **2 widgets de tableau de bord** (ci-dessous).
 - Arrêts lus toutes les minutes par défaut (30 s à 5 min, toutes les 10 min la nuit quand rien n’est annoncé), trafic toutes les 5 minutes ; lignes et arrêts du réseau gardés dans `/data`.
-- Boutons de configuration : tester la connexion, chercher un arrêt (noms exacts et identifiants), diagnostic.
+- Boutons de configuration : tester la connexion, chercher un arrêt (noms exacts, identifiants et directions de chaque côté de la rue), ajouter / retirer / lister les arrêts, diagnostic.
 - Quatre langues partout : anglais, français, allemand, espagnol.
 
 ## Fonctionnement
@@ -118,11 +118,11 @@ Exemples :
 | Lecture des arrêts | 30 s, 1 min (par défaut), 2 min ou 5 min.                                                         |
 | Langue des textes  | Noms des appareils, résumés et sorties des scènes.                                                |
 
-Boutons : **Tester la connexion**, **Chercher un arrêt** (noms exacts et identifiants de chaque côté de la rue) et **Diagnostic** (écrit les arrêts, lignes, derniers passages et erreurs dans l’onglet Journaux, jamais la clé).
+Boutons : **Tester la connexion**, **Chercher un arrêt** (noms exacts, identifiants et directions de chaque côté de la rue), **Ajouter un arrêt**, **Retirer un arrêt**, **Lister les arrêts** (les arrêts au-delà des trois du formulaire, gardés dans la configuration de Gladys) et **Diagnostic** (écrit les arrêts, lignes, derniers passages et erreurs dans l’onglet Journaux, jamais la clé).
 
 ## Utilisation
 
-1. Saisissez votre clé d’API, un à trois arrêts (avec leur ligne et leur direction si vous voulez) et les lignes à suivre, puis enregistrez.
+1. Saisissez votre clé d’API, un à trois arrêts — plus avec **Ajouter un arrêt** — (avec leur ligne et leur direction si vous voulez) et les lignes à suivre, puis enregistrez.
 2. Dans l’onglet **Découvrir**, créez les appareils « Ginko … ».
 3. Ajoutez les widgets **Passages Ginko** et **Trafic Ginko** à un tableau de bord, et créez des scènes avec les déclencheurs ci-dessus.
 

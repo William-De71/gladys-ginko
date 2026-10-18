@@ -10,6 +10,7 @@ import {
   buildTrafficWidget,
   messageContent,
   readCount,
+  routeValue,
   BOARD_COUNT,
 } from '../src/widgets.js';
 import { parsePassages, passageOf } from '../src/departures.js';
@@ -26,7 +27,7 @@ function assertValid(content, label) {
   assert.deepEqual(validateWidgetContent(content), [], label);
 }
 
-test('departures widget: next wait, passages with badges, update time, in every language', () => {
+test('departures widget: one compact row per route, timetable in grey, in every language', () => {
   const passages = parsePassages(VIOTTE.objets, {}, NOW);
   for (const language of LANGUAGES) {
     const content = buildDeparturesWidget({
@@ -52,20 +53,39 @@ test('departures widget: next wait, passages with badges, update time, in every 
   });
   assert.deepEqual(
     fr.components.map((c) => c.type),
-    ['text', 'value', 'card-list', 'text'],
+    ['text', 'text', 'status'],
+    'no tile, no card: the stop, its update time, a row per route',
   );
-  const [, tile, list, caption] = fr.components;
-  assert.deepEqual([tile.value, tile.label], [1, 'Prochain · T2']);
-  assert.deepEqual(list.items[0], {
-    title: 'T2 → Hauts du Chazal',
-    badge: { text: '1 min', color: 'neutral' },
-    subtitle: 'Horaire théorique (véhicule non localisé)',
-  });
-  assert.deepEqual(list.items[1].badge, { text: '9 min', color: 'neutral' });
+  const [heading, caption, status] = fr.components;
+  assert.equal(heading.text, 'Gare Viotte');
   assert.equal(caption.text, 'Ginko · mis à jour à 22:19');
+  assert.deepEqual(
+    status.items.map((item) => [item.label, item.value, item.color]),
+    [
+      ['T2 → Hauts du Chazal', '1 · 9 · 27 min · théorique', 'neutral'],
+      ['L3 → Pôle Temis', '10 · 33 min · 23:29', 'success'],
+      ['L5 → Bregille', '17 · 54 min · 23:47', 'success'],
+      // A long destination keeps its row on one line: one passage less.
+      ['L3 → Centre-ville - 8 Septembre', '18 · 45 min', 'success'],
+      ['L5 → St Claude', '27 min · 23:28 · 00:03', 'success'],
+    ],
+  );
+  const two = buildDeparturesWidget({
+    title: 'Gare Viotte',
+    passages,
+    readAt: NOW,
+    count: 2,
+    language: 'de',
+    now: NOW,
+    timeZone: TZ,
+  });
+  assert.deepEqual(
+    two.components[2].items.map((item) => item.value),
+    ['1 · 9 · 27 Min. · Fahrplan', '10 · 33 Min. · 23:29'],
+  );
 });
 
-test('departures widget: stops not served, a full bus, nothing announced', () => {
+test('departures widget: stops not served, mixed timetable, a full bus, nothing announced', () => {
   const chamars = parsePassages(CHAMARS.objets, {}, NOW);
   const content = buildDeparturesWidget({
     title: 'Chamars',
@@ -77,17 +97,44 @@ test('departures widget: stops not served, a full bus, nothing announced', () =>
     timeZone: TZ,
   });
   assertValid(content, 'chamars');
-  assert.equal(content.components[1].type, 'card-list', 'no wait tile: nothing serves the stop');
-  assert.deepEqual(content.components[1].items[0].badge, { text: 'Non desservi', color: 'danger' });
+  assert.deepEqual(
+    content.components[2].items.map((item) => [item.label, item.value, item.color]),
+    [
+      ['T2 → Hauts du Chazal', 'Non desservi', 'danger'],
+      ['T1 → Chalezeule', 'Non desservi', 'danger'],
+      ['T2 → Gare Viotte', 'Non desservi', 'danger'],
+      ['T1 → Hauts du Chazal', 'Non desservi', 'danger'],
+    ],
+  );
+  // A located tram, then two timetable times: a star on those, and its key.
+  const mixed = [
+    passage({ tempsEnSeconde: 120, destination: 'Chalezeule' }),
+    passage({ tempsEnSeconde: 600, destination: 'Chalezeule', fiable: false }),
+    passage({ tempsEnSeconde: 1200, destination: 'Chalezeule', fiable: false }),
+  ].map((raw) => passageOf(raw, NOW));
+  const located = buildDeparturesWidget({
+    title: 'X',
+    passages: mixed,
+    readAt: NOW,
+    count: 6,
+    language: 'fr',
+    now: NOW,
+    timeZone: TZ,
+  });
+  assertValid(located, 'mixed');
+  assert.deepEqual(located.components[2].items[0], {
+    label: 'T2 → Chalezeule',
+    value: '2 · 10* · 20* min',
+    color: 'success',
+  });
+  assert.equal(located.components[1].text, 'Ginko · mis à jour à 22:19 · * théorique');
+  assert.deepEqual(routeValue(mixed.slice(1), { language: 'en', now: NOW, timeZone: TZ }), {
+    value: '10 · 20 min · timetable',
+    starred: false,
+  });
   const full = [
     passageOf(
-      passage({
-        typeDeTemps: 2,
-        temps: 'Bus complet',
-        alternance: true,
-        affluence: 2,
-        tempsEnSeconde: 400,
-      }),
+      passage({ typeDeTemps: 2, temps: 'Bus complet', alternance: true, tempsEnSeconde: 400 }),
       NOW,
     ),
   ];
@@ -101,7 +148,7 @@ test('departures widget: stops not served, a full bus, nothing announced', () =>
     timeZone: TZ,
   });
   assertValid(busy, 'full');
-  assert.equal(busy.components[2].items[0].subtitle, 'Bus complet · Stark besetzt');
+  assert.equal(busy.components[2].items[0].value, '6 Min. (Bus complet)');
   const empty = buildDeparturesWidget({
     title: 'X',
     passages: [],

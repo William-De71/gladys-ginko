@@ -11,9 +11,12 @@ own sandboxed Docker container and talks to Gladys through
 [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js),
 its only runtime dependency. It reads the open data API of Ginko
 (`https://api.ginko.voyage`, a free key asked by e-mail, ODbL data): the
-passages of up to three stops (`TR/getTempsLieu`), the traffic of up to six
+passages of the followed stops — three in the form, up to 20 more added with
+the "Add a stop" button (`TR/getTempsLieu`) —, the traffic of up to six
 lines (`TR/getEtatLignes`, `TR/getMessages`), and the lines and stops of the
-network (`DR/getLignes`, `DR/getArrets`, kept in /data). Transport: cloud only.
+network (`DR/getLignes`, `DR/getArrets`, kept in /data), and the directions of
+one stop for "Find a stop" (`DR/getVariantesDesservantArret`, kept a day).
+Transport: cloud only.
 Documentation of the API: https://api.ginko.voyage/APIDoc/ (Swagger, `APIGinko.yaml`).
 
 ## Commands
@@ -46,7 +49,7 @@ src/device.js           the stop and line devices and their states
 src/widgets.js          departures and traffic dashboard widgets
 src/store.js            /data/ginko.json: network, `seen`
 src/time.js             times of day (TZ), the service day (04:00)
-src/config.js           configuration (key, three stops, lines, interval, language)
+src/config.js           configuration (key, three stops + `added_stops`, lines, interval, language)
 src/i18n.js             runtime texts, en / fr / de / es
 gladys-assistant-integration.json   manifest
 docs/{en,fr,de,es}.md   user documentation, re-hosted by the store
@@ -63,7 +66,8 @@ test/fixtures/          real answers of the Ginko API, reduced (ODbL)
   could change), feature `category` / `type` / `unit` / `min` / `max` /
   `step`, the keys of `config_schema`, `actions`, the widgets and their
   settings, scene triggers (fields, options, variables) and scene actions
-  (fields, outputs). `test/structure.test.js` compares them to
+  (fields, outputs), and the internal config keys `added_stops` (`[{ stop,
+line, direction }]`) and `last_language`. `test/structure.test.js` compares them to
   `test/fixtures/discovery.baseline.json`: never update the baseline to make a
   test pass without a documented migration.
 - **Category / type pairs.** The next passage and the line traffic are `text`

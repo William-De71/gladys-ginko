@@ -2,7 +2,7 @@
 
 ## Overview
 
-This integration brings **Ginko**, the bus and tram network of Grand Besançon, into Gladys: the **next passages in real time** at up to three stops of your choice, filtered by line and direction, and the **traffic** of up to six lines (normal, disrupted, interrupted, with the messages of Ginko). Each stop and each line becomes a device you can show on a dashboard and use in scenes.
+This integration brings **Ginko**, the bus and tram network of Grand Besançon, into Gladys: the **next passages in real time** at the stops of your choice (three in the form, up to 20 more with a button), filtered by line and direction, and the **traffic** of up to six lines (normal, disrupted, interrupted, with the messages of Ginko). Each stop and each line becomes a device you can show on a dashboard and use in scenes.
 
 The data come from the **open data API of Ginko** (Keolis Besançon Mobilités, for Grand Besançon Métropole), under the ODbL licence. The stops are read every minute by default (every 10 minutes while a stop announces nothing, at night), the traffic every 5 minutes. The lines and stops of the network are kept in the integration and read again once a day and once a week.
 
@@ -25,7 +25,9 @@ It is a **cloud** integration: it contacts `api.ginko.voyage` with your key. Not
 | Reading of the stops  | Every 30 seconds, minute, 2 minutes or 5 minutes.                                                                |
 | Language of the texts | Device names, scene summaries and outputs. The names of stops and the messages of Ginko stay in French.          |
 
-The **Find a stop** button gives the exact names of the stops holding a few words, with the id of each side of the street. A name Ginko spells differently is found anyway ("Pôle Temis" gives "Temis"). **Test the connection** checks the key and reads every stop and line at once.
+The **Find a stop** button gives the exact names of the stops holding a few words, with the id of each side of the street and the directions served there ("BQTSO01 → Prés de Vaux (12), Trey (D4)"): copy the id of the side you board. A name Ginko spells differently is found anyway ("Pôle Temis" gives "Temis"). **Test the connection** checks the key and reads every stop and line at once.
+
+More stops than the three of the form (home, work…): **Add a stop** takes the same three fields — stop, line, direction — and follows up to 20 more stops. **List the stops** shows every followed stop, numbered; **Remove a stop** takes that number (or the name). The added stops are kept in the Gladys configuration, so they follow its backups.
 
 ## Usage
 
@@ -42,7 +44,7 @@ When the vehicle is not located, Ginko gives the timetable: the integration says
 
 ![The Ginko departures widget at Gare Viotte and the Ginko traffic widget of five lines (generated illustration, not a screenshot)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.en.png)
 
-- **Ginko departures**: the next passages of a stop, like the screens of the stops: line, destination, wait or time, "not served", the timetable times in grey. Choose a followed stop, or type any stop (and a line) in the settings of the widget.
+- **Ginko departures**: the next passages of a stop, compact: one row per line and destination with its next passages on one line ("1 · 9 · 27 min", "23:32", "Non desservi"), the timetable times in grey. The setting **Routes shown** sets the number of rows. Choose a followed stop, or type any stop (and a line) in the settings of the widget.
 - **Ginko traffic**: the state of each line, then the messages of Ginko; tap a card for the full text and the link to ginko.voyage. The followed lines, or the ones typed in the settings.
 
 ### Scenes

@@ -2,8 +2,9 @@
 // integration. Its answers are real ones, read on 2026-10-17 at 22:19 (Paris)
 // and reduced: nine lines, the stops of six names, the passages at Chamars
 // (T1 and T2 not serving it: a demonstration in the city centre) and at Gare
-// Viotte, the state of the lines and twelve traffic messages. Open data of
-// Ginko, ODbL. Tests never touch the network.
+// Viotte, the state of the lines and twelve traffic messages; the lines and
+// directions of each of these stops, read on 2026-10-18. Open data of Ginko,
+// ODbL. Tests never touch the network.
 
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -22,6 +23,8 @@ const CHAMARS = fixture('temps-chamars.json');
 const VIOTTE = fixture('temps-viotte.json');
 const STATES = fixture('etat-lignes.json');
 const MESSAGES = fixture('messages.json');
+// stop id -> the FormLigne objects of getVariantesDesservantArret, reduced.
+const ROUTES = fixture('variantes.json');
 
 const silent = { info() {}, warn() {}, error() {}, debug() {} };
 
@@ -79,6 +82,7 @@ function fakeGinko() {
     places: { chamars: clone(CHAMARS), 'gare viotte': clone(VIOTTE) },
     states: clone(STATES),
     messages: clone(MESSAGES),
+    routes: clone(ROUTES),
     // 'network', or an HTTP status, for every request.
     fail: null,
   };
@@ -119,6 +123,14 @@ function fakeGinko() {
         return json(state.states);
       case 'TR/getMessages':
         return json(state.messages);
+      case 'DR/getVariantesDesservantArret': {
+        const routes = state.routes[parsed.searchParams.get('idArret')];
+        return json(
+          routes
+            ? { ok: true, objets: routes }
+            : { ok: false, msg: 'Aucun arrêt ne correspond à votre recherche.' },
+        );
+      }
       case 'TR/getTempsLieu': {
         const id = parsed.searchParams.get('idArret');
         if (id) {
@@ -168,6 +180,7 @@ export {
   VIOTTE,
   STATES,
   MESSAGES,
+  ROUTES,
   silent,
   storePath,
   passage,

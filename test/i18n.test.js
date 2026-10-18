@@ -192,12 +192,11 @@ test('README: one per language, same structure, each linking to the three others
   }
 });
 
-test('runtime labels fit the widget bounds: badges 16, tile labels 24, units 6', () => {
+test('runtime labels fit the widget bounds: badges 16, link labels 24, units 6', () => {
   for (const language of LANGUAGES) {
-    for (const key of ['badgeNotServed', 'approaching']) {
+    for (const key of ['badgeNotServed', 'approaching', 'timetableShort']) {
       assert.ok(TEXTS[key][language].length <= 16, `${key}.${language}`);
     }
-    assert.ok(`${TEXTS.nextIn[language]} · Plan B`.length <= 24, `nextIn.${language}`);
     assert.ok(TEXTS.moreInfo[language].length <= 24, `moreInfo.${language}`);
     assert.ok(TEXTS.minutesShort[language].length <= 6, `minutesShort.${language}`);
     assert.ok(t('minutesValue', language, { n: 59 }).length <= 16, `minutesValue.${language}`);

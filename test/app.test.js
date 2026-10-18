@@ -294,10 +294,12 @@ test('widgets: followed stops, a typed stop, lines; valid in every language', as
     settings: { stop_name: 'viotte', line: 'L5', count: 3 },
     language: 'fr',
   });
-  const [heading, , list] = typed.data.content.components;
+  const [heading, , status] = typed.data.content.components;
   assert.equal(heading.text, 'Gare Viotte (L5)');
-  assert.equal(list.items.length, 3);
-  assert.ok(list.items.every((item) => item.title.startsWith('L5 → ')));
+  assert.deepEqual(
+    status.items.map((item) => item.label),
+    ['L5 → Bregille', 'L5 → St Claude'],
+  );
   const lines = await gladys.fake.widgetGet(WIDGETS.TRAFFIC, {
     settings: { lines: 'T2, Plan B' },
     language: 'en',
@@ -342,7 +344,7 @@ test('scene actions: next passages of a stop, traffic of a line', async (t) => {
 test('configuration actions: test, find a stop, diagnostic without the key', async (t) => {
   const lines = [];
   const logger = { ...silent, info: (line) => lines.push(line) };
-  const { gladys } = await startApp({ logger });
+  const { gladys, api } = await startApp({ logger });
   t.after(() => gladys.fake.shutdown());
   const tested = await gladys.fake.action(ACTIONS.TEST_CONNECTION);
   assert.equal(
@@ -350,7 +352,21 @@ test('configuration actions: test, find a stop, diagnostic without the key', asy
     'Clé d’API acceptée, 9 lignes aujourd’hui · Gare Viotte (T2 → Hauts du Chazal) : 3 passage(s), prochain T2 dans 1 min · Chamars : 12 passage(s), prochain – · Ligne T1 : Perturbation en cours · Ligne L4 : Circulation interrompue · inconnu : Nulle part · inconnu : T9',
   );
   const found = await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'gare' });
-  assert.match(found.data.message.en, /Gare Viotte \(.*t_gvio1.*\)/);
+  assert.equal(
+    found.data.message.fr,
+    [
+      'Saisissez le nom pour les deux côtés de la rue, ou un identifiant pour un seul côté (ses directions après la flèche) :',
+      'Gare Viotte',
+      '• GAREVIO1 → Chalezeule (Plan B), Centre-ville - 8 Septembre (L3), Bregille (L5), Gare Viotte (D5)',
+      '• GAREVIO2 → Hauts du Chazal (Plan B), Pôle Temis (L3), St Claude (L5), CHU Minjoz (Ginko Hôpital), Founottes (D5)',
+      '• t_gvio1 → Gare Viotte (T2)',
+      '• t_gvio2 → Hauts du Chazal (T2)',
+    ].join('\n'),
+  );
+  // The directions are kept a day: a second search asks nothing.
+  const asked = api.calls.length;
+  await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'gare viotte' });
+  assert.equal(api.calls.length, asked);
   const short = await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'g' });
   assert.match(short.data.message.es, /al menos dos letras/);
   const none = await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'zzz' });
@@ -374,4 +390,113 @@ test('an id typed for one side of the street reads only that stop', async (t) =>
   );
   const call = api.calls.find((c) => c.method === 'TR/getTempsLieu');
   assert.equal(call.params.idArret, 't_cham2');
+});
+
+test('find a stop: the directions of a few stops, then a hint to narrow the name', async (t) => {
+  const { gladys, api } = await startApp();
+  t.after(() => gladys.fake.shutdown());
+  api.state.routes = { ...api.state.routes, CHAMARS2: undefined };
+  // Every stop of the fixtures: 21 sides of the street, 12 read at most.
+  const found = await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'a' });
+  assert.equal(found.success, true);
+  assert.equal(
+    api.calls.filter((call) => call.method === 'DR/getVariantesDesservantArret').length,
+    0,
+    'two letters at least',
+  );
+  const many = await gladys.fake.action(ACTIONS.SEARCH_STOP, { query: 'ar' });
+  const read = api.calls.filter((call) => call.method === 'DR/getVariantesDesservantArret');
+  assert.ok(read.length <= 12);
+  assert.match(many.data.message.fr, /• CHAMARS2\n/, 'not read: the id alone');
+  assert.match(many.data.message.en, /type more of the name/);
+});
+
+test('add, list and remove stops with the buttons, beyond the three of the form', async (t) => {
+  const { gladys, api } = await startApp();
+  t.after(() => gladys.fake.shutdown());
+  const added = await gladys.fake.action(ACTIONS.ADD_STOP, { stop: 'viotte', line: '3' });
+  assert.equal(
+    added.data.message.fr,
+    'Arrêt ajouté : Gare Viotte (L3). 3 arrêt(s) suivi(s). Son appareil est proposé dans l’onglet Découvrir.',
+  );
+  // Stored resolved, in the Gladys configuration (its backups).
+  assert.deepEqual(gladys.fake.config.added_stops, [
+    { stop: 'Gare Viotte', line: 'L3', direction: '' },
+  ]);
+  assert.ok(
+    gladys.fake.discoveredDevices.some((d) => d.external_id === `${PREFIX}:stop:n-gare-viotte_3`),
+  );
+  const again = await gladys.fake.action(ACTIONS.ADD_STOP, { stop: 'Gare Viotte', line: 'L3' });
+  assert.equal(again.data.message.en, 'Gare Viotte (L3) is already followed.');
+  const unknown = await gladys.fake.action(ACTIONS.ADD_STOP, { stop: 'Chamars', line: 'Z9' });
+  assert.equal(unknown.data.message.fr, 'Inconnu de Ginko : Z9.');
+  await gladys.fake.action(ACTIONS.ADD_STOP, { stop: 't_cham1', direction: 'Chalezeule' });
+
+  const list = await gladys.fake.action(ACTIONS.LIST_STOPS);
+  assert.equal(
+    list.data.message.fr,
+    [
+      '5 arrêt(s) suivi(s) :',
+      '1. Gare Viotte (T2 → Hauts du Chazal) (formulaire, arrêt 1)',
+      '2. Chamars (formulaire, arrêt 2)',
+      '3. Nulle part (formulaire, arrêt 3, inconnu de Ginko)',
+      '4. Gare Viotte (L3)',
+      '5. Chamars [t_cham1] (→ Chalezeule)',
+    ].join('\n'),
+  );
+  const form = await gladys.fake.action(ACTIONS.REMOVE_STOP, { stop: '2' });
+  assert.equal(
+    form.data.message.fr,
+    'Chamars est l’arrêt 2 du formulaire : videz son champ, puis enregistrez la configuration.',
+  );
+  // The name of a stop both in the form and added: the added one.
+  const removed = await gladys.fake.action(ACTIONS.REMOVE_STOP, { stop: 'gare viotte' });
+  assert.equal(
+    removed.data.message.fr,
+    'Arrêt retiré : Gare Viotte (L3). Supprimez son appareil dans Gladys si vous n’en voulez plus.',
+  );
+  assert.deepEqual(gladys.fake.config.added_stops, [
+    { stop: 't_cham1', line: '', direction: 'Chalezeule' },
+  ]);
+  const none = await gladys.fake.action(ACTIONS.REMOVE_STOP, { stop: '9' });
+  assert.match(none.data.message.en, /No added stop matches "9"/);
+
+  // Saving the form keeps the added stops (the core writes key by key).
+  await gladys.fake.configUpdated({ ...CONFIG, added_stops: gladys.fake.config.added_stops });
+  assert.deepEqual(
+    gladys.fake.discoveredDevices.map((d) => d.external_id).filter((id) => id.includes(':stop:')),
+    [VIOTTE, CHAMARS, `${PREFIX}:stop:i-t_cham1_chalezeule`],
+  );
+  assert.ok(api.calls.length > 0);
+});
+
+test('two followed stops on the same stop share one request per reading', async (t) => {
+  const { gladys, api } = await startApp({
+    config: {
+      api_key: KEY,
+      stop_1: 'Gare Viotte',
+      stop_1_line: 'T2',
+      added_stops: [{ stop: 'Gare Viotte', line: 'L3', direction: '' }],
+    },
+  });
+  t.after(() => gladys.fake.shutdown());
+  const reads = api.calls.filter((call) => call.method === 'TR/getTempsLieu');
+  assert.equal(reads.length, 1);
+  assert.equal(gladys.fake.discoveredDevices.length, 2);
+});
+
+test('the added stops are capped', async (t) => {
+  const { gladys } = await startApp({
+    config: {
+      api_key: KEY,
+      added_stops: Array.from({ length: 20 }, () => ({ stop: 'Chamars' })),
+    },
+  });
+  t.after(() => gladys.fake.shutdown());
+  const full = await gladys.fake.action(ACTIONS.ADD_STOP, { stop: 'Gare Viotte' });
+  assert.equal(full.data.message.fr, 'Déjà 20 arrêts ajoutés : retirez-en un d’abord.');
+  const none = await startApp({ config: { api_key: KEY } });
+  t.after(() => none.gladys.fake.shutdown());
+  const empty = await none.gladys.fake.action(ACTIONS.LIST_STOPS);
+  assert.match(empty.data.message.fr, /Aucun arrêt suivi/);
 });

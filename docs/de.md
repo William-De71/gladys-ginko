@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Diese Integration bringt **Ginko**, das Bus- und Tramnetz von Grand Besançon, in Gladys: die **nächsten Abfahrten in Echtzeit** an bis zu drei Haltestellen deiner Wahl, gefiltert nach Linie und Richtung, und die **Verkehrslage** von bis zu sechs Linien (normal, gestört, unterbrochen, mit den Meldungen von Ginko). Jede Haltestelle und jede Linie wird zu einem Gerät, das du auf einem Dashboard anzeigen und in Szenen verwenden kannst.
+Diese Integration bringt **Ginko**, das Bus- und Tramnetz von Grand Besançon, in Gladys: die **nächsten Abfahrten in Echtzeit** an Haltestellen deiner Wahl (drei im Formular, bis zu 20 weitere per Schaltfläche), gefiltert nach Linie und Richtung, und die **Verkehrslage** von bis zu sechs Linien (normal, gestört, unterbrochen, mit den Meldungen von Ginko). Jede Haltestelle und jede Linie wird zu einem Gerät, das du auf einem Dashboard anzeigen und in Szenen verwenden kannst.
 
 Die Daten stammen aus der **Open-Data-API von Ginko** (Keolis Besançon Mobilités, für Grand Besançon Métropole) unter der ODbL-Lizenz. Die Haltestellen werden standardmäßig jede Minute gelesen (alle 10 Minuten, solange eine Haltestelle nichts ankündigt, nachts), die Verkehrslage alle 5 Minuten. Linien und Haltestellen des Netzes behält die Integration und liest sie einmal täglich bzw. wöchentlich neu.
 
@@ -25,7 +25,9 @@ Es ist eine **Cloud**-Integration: Sie kontaktiert `api.ginko.voyage` mit deinem
 | Abfrage der Haltestellen | Alle 30 Sekunden, jede Minute, alle 2 oder 5 Minuten.                                                                     |
 | Sprache der Texte        | Gerätenamen, Zusammenfassungen und Ausgaben der Szenen. Haltestellennamen und Meldungen von Ginko bleiben französisch.    |
 
-Die Schaltfläche **Haltestelle suchen** liefert die genauen Namen der Haltestellen mit einigen Wörtern und die Kennung jeder Straßenseite. Ein Name, den Ginko anders schreibt, wird trotzdem gefunden („Pôle Temis“ ergibt „Temis“). **Verbindung testen** prüft den Schlüssel und liest sofort jede Haltestelle und Linie.
+Die Schaltfläche **Haltestelle suchen** liefert die genauen Namen der Haltestellen mit einigen Wörtern und die Kennung jeder Straßenseite mit den dort bedienten Fahrtrichtungen („BQTSO01 → Prés de Vaux (12), Trey (D4)“): Kopiere die Kennung der Seite, an der du einsteigst. Ein Name, den Ginko anders schreibt, wird trotzdem gefunden („Pôle Temis“ ergibt „Temis“). **Verbindung testen** prüft den Schlüssel und liest sofort jede Haltestelle und Linie.
+
+Mehr Haltestellen als die drei des Formulars (Zuhause, Arbeit…): **Haltestelle hinzufügen** nimmt dieselben drei Felder — Haltestelle, Linie, Richtung — und verfolgt bis zu 20 weitere Haltestellen. **Haltestellen auflisten** zeigt alle verfolgten Haltestellen nummeriert; **Haltestelle entfernen** nimmt diese Nummer (oder den Namen). Die hinzugefügten Haltestellen liegen in der Gladys-Konfiguration und sind damit in ihren Sicherungen enthalten.
 
 ## Verwendung
 
@@ -42,7 +44,7 @@ Ist das Fahrzeug nicht geortet, liefert Ginko die Fahrplanzeit: Die Integration 
 
 ![Das Widget Ginko-Abfahrten an der Gare Viotte und das Widget Ginko-Verkehrslage für fünf Linien (generierte Illustration, kein Screenshot)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.de.png)
 
-- **Ginko-Abfahrten**: die nächsten Abfahrten einer Haltestelle wie auf den Anzeigen der Haltestellen: Linie, Ziel, Wartezeit oder Uhrzeit, „kein Halt“, Fahrplanzeiten in Grau. Wähle eine verfolgte Haltestelle oder gib eine beliebige Haltestelle (und eine Linie) in den Widget-Einstellungen ein.
+- **Ginko-Abfahrten**: die nächsten Abfahrten einer Haltestelle, kompakt: eine Zeile pro Linie und Ziel mit ihren nächsten Abfahrten hintereinander („1 · 9 · 27 Min.“, „23:32“, „Non desservi“), Fahrplanzeiten in Grau. Die Einstellung **Angezeigte Fahrten** legt die Zahl der Zeilen fest. Wähle eine verfolgte Haltestelle oder gib eine beliebige Haltestelle (und eine Linie) in den Widget-Einstellungen ein.
 - **Ginko-Verkehrslage**: der Zustand jeder Linie, dann die Meldungen von Ginko; tippe auf eine Karte für den vollständigen Text und den Link zu ginko.voyage. Die verfolgten Linien oder die in den Einstellungen eingegebenen.
 
 ### Szenen

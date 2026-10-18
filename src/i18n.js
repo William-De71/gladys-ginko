@@ -248,12 +248,6 @@ const TEXTS = {
     de: 'Ginko · aktualisiert um {time}',
     es: 'Ginko · actualizado a las {time}',
   },
-  nextIn: {
-    en: 'Next one',
-    fr: 'Prochain',
-    de: 'Nächste',
-    es: 'Próximo',
-  },
   minutesShort: {
     en: 'min',
     fr: 'min',
@@ -266,29 +260,11 @@ const TEXTS = {
     de: 'Kein Halt',
     es: 'Sin parada',
   },
-  timetableNote: {
-    en: 'Timetable (vehicle not located)',
-    fr: 'Horaire théorique (véhicule non localisé)',
-    de: 'Fahrplanzeit (Fahrzeug nicht geortet)',
-    es: 'Horario teórico (vehículo no localizado)',
-  },
-  crowd_0: {
-    en: 'Few passengers',
-    fr: 'Peu de voyageurs',
-    de: 'Wenig Fahrgäste',
-    es: 'Pocos viajeros',
-  },
-  crowd_1: {
-    en: 'Some passengers',
-    fr: 'Affluence modérée',
-    de: 'Mäßig besetzt',
-    es: 'Afluencia moderada',
-  },
-  crowd_2: {
-    en: 'Crowded',
-    fr: 'Forte affluence',
-    de: 'Stark besetzt',
-    es: 'Mucha afluencia',
+  timetableShort: {
+    en: 'timetable',
+    fr: 'théorique',
+    de: 'Fahrplan',
+    es: 'teórico',
   },
   moreInfo: {
     en: 'More on ginko.voyage',
@@ -431,10 +407,84 @@ const TEXTS = {
     es: 'Ninguna parada de Ginko coincide con «{query}».',
   },
   searchFound: {
-    en: 'Type the name for both sides of the street, or an id for one side: {list}',
-    fr: 'Saisissez le nom pour les deux côtés de la rue, ou un identifiant pour un seul côté : {list}',
-    de: 'Gib den Namen für beide Straßenseiten ein oder eine Kennung für eine Seite: {list}',
-    es: 'Escribe el nombre para ambos lados de la calle, o un identificador para un solo lado: {list}',
+    en: 'Type the name for both sides of the street, or an id for one side only (its directions after the arrow):\n{list}',
+    fr: 'Saisissez le nom pour les deux côtés de la rue, ou un identifiant pour un seul côté (ses directions après la flèche) :\n{list}',
+    de: 'Gib den Namen für beide Straßenseiten ein oder eine Kennung für nur eine Seite (ihre Fahrtrichtungen nach dem Pfeil):\n{list}',
+    es: 'Escribe el nombre para ambos lados de la calle, o un identificador para un solo lado (sus direcciones tras la flecha):\n{list}',
+  },
+  searchMore: {
+    en: '… type more of the name to see the directions of the other stops.',
+    fr: '… précisez le nom pour voir les directions des autres arrêts.',
+    de: '… gib mehr vom Namen ein, um die Fahrtrichtungen der anderen Haltestellen zu sehen.',
+    es: '… escribe más del nombre para ver las direcciones de las otras paradas.',
+  },
+
+  // stops added with the configuration buttons
+  stopAdded: {
+    en: 'Stop added: {name}. {count} stop(s) followed. Its device is offered in the Discover tab.',
+    fr: 'Arrêt ajouté : {name}. {count} arrêt(s) suivi(s). Son appareil est proposé dans l’onglet Découvrir.',
+    de: 'Haltestelle hinzugefügt: {name}. {count} Haltestelle(n) verfolgt. Ihr Gerät wird im Tab Entdecken angeboten.',
+    es: 'Parada añadida: {name}. {count} parada(s) seguida(s). Su dispositivo se ofrece en la pestaña Descubrir.',
+  },
+  stopAlreadyFollowed: {
+    en: '{name} is already followed.',
+    fr: '{name} est déjà suivi.',
+    de: '{name} wird bereits verfolgt.',
+    es: '{name} ya se sigue.',
+  },
+  stopsFull: {
+    en: 'Already {max} stops added: remove one first.',
+    fr: 'Déjà {max} arrêts ajoutés : retirez-en un d’abord.',
+    de: 'Bereits {max} Haltestellen hinzugefügt: entferne zuerst eine.',
+    es: 'Ya hay {max} paradas añadidas: quita una primero.',
+  },
+  stopRemoved: {
+    en: 'Stop removed: {name}. Delete its device in Gladys if you no longer want it.',
+    fr: 'Arrêt retiré : {name}. Supprimez son appareil dans Gladys si vous n’en voulez plus.',
+    de: 'Haltestelle entfernt: {name}. Lösche ihr Gerät in Gladys, wenn du es nicht mehr brauchst.',
+    es: 'Parada quitada: {name}. Borra su dispositivo en Gladys si ya no lo quieres.',
+  },
+  stopRemoveUnknown: {
+    en: 'No added stop matches "{query}": type its number given by "List the stops".',
+    fr: 'Aucun arrêt ajouté ne correspond à « {query} » : saisissez son numéro donné par « Lister les arrêts ».',
+    de: 'Keine hinzugefügte Haltestelle passt zu „{query}“: gib ihre Nummer aus „Haltestellen auflisten“ ein.',
+    es: 'Ninguna parada añadida coincide con «{query}»: escribe su número dado por «Listar las paradas».',
+  },
+  stopRemoveAmbiguous: {
+    en: 'Several added stops match "{query}": type the number given by "List the stops".',
+    fr: 'Plusieurs arrêts ajoutés correspondent à « {query} » : saisissez le numéro donné par « Lister les arrêts ».',
+    de: 'Mehrere hinzugefügte Haltestellen passen zu „{query}“: gib die Nummer aus „Haltestellen auflisten“ ein.',
+    es: 'Varias paradas añadidas coinciden con «{query}»: escribe el número dado por «Listar las paradas».',
+  },
+  stopInForm: {
+    en: '{name} is stop {slot} of the form: empty its field, then save the configuration.',
+    fr: '{name} est l’arrêt {slot} du formulaire : videz son champ, puis enregistrez la configuration.',
+    de: '{name} ist Haltestelle {slot} des Formulars: leere ihr Feld und speichere dann die Konfiguration.',
+    es: '{name} es la parada {slot} del formulario: vacía su campo y guarda la configuración.',
+  },
+  stopsNone: {
+    en: 'No stop followed yet: fill in a stop of the form or press "Add a stop".',
+    fr: 'Aucun arrêt suivi pour l’instant : remplissez un arrêt du formulaire ou appuyez sur « Ajouter un arrêt ».',
+    de: 'Noch keine Haltestelle verfolgt: fülle eine Haltestelle im Formular aus oder drücke „Haltestelle hinzufügen“.',
+    es: 'Aún no se sigue ninguna parada: rellena una parada del formulario o pulsa «Añadir una parada».',
+  },
+  stopsList: {
+    en: '{count} stop(s) followed:\n{list}',
+    fr: '{count} arrêt(s) suivi(s) :\n{list}',
+    de: '{count} Haltestelle(n) verfolgt:\n{list}',
+    es: '{count} parada(s) seguida(s):\n{list}',
+  },
+  stopFromForm: {
+    en: 'form, stop {slot}',
+    fr: 'formulaire, arrêt {slot}',
+    de: 'Formular, Haltestelle {slot}',
+    es: 'formulario, parada {slot}',
+  },
+  stopUnknownMark: {
+    en: 'unknown to Ginko',
+    fr: 'inconnu de Ginko',
+    de: 'Ginko unbekannt',
+    es: 'desconocido para Ginko',
   },
   searchLines: {
     en: '{name} — lines: {list}',

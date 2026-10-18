@@ -1,0 +1,986 @@
+{
+  "HUITSEP1": [
+    {
+      "id": "3",
+      "numLignePublic": "L3",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "209-10",
+          "sensAller": true,
+          "destination": "Centre-ville - 8 Septembre",
+          "precisionDestination": "par Campus et Gare Viotte"
+        },
+        {
+          "id": "209-14",
+          "sensAller": false,
+          "destination": "Pôle Temis",
+          "precisionDestination": "par Gare Viotte et Campus"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "numLignePublic": "L4",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "172-0",
+          "sensAller": false,
+          "destination": "Châteaufarine",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "numLignePublic": "L6",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "242-3",
+          "sensAller": false,
+          "destination": "Founottes",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "numLignePublic": "10",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "93-3",
+          "sensAller": false,
+          "destination": "CHU Minjoz",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "numLignePublic": "Ginko Citadelle",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "83-2",
+          "sensAller": false,
+          "destination": "Pôle Chamars",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "BRULARD1": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-61",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "BRULARD2": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-62",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "98",
+      "numLignePublic": "Ginko Hôpital",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "174-0",
+          "sensAller": true,
+          "destination": "CHU Minjoz",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    }
+  ],
+  "t_brula1": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_brula2": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "CHAMARS1": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-62",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "numLignePublic": "9",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "23-1",
+          "sensAller": true,
+          "destination": "Velotte",
+          "precisionDestination": "par Chamars"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "numLignePublic": "21",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "139-1",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": ""
+        },
+        {
+          "id": "139-0",
+          "sensAller": false,
+          "destination": "Besançon - Port Douvot",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "numLignePublic": "23",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "132-1",
+          "sensAller": true,
+          "destination": "Besançon Pôle Chamars",
+          "precisionDestination": ""
+        },
+        {
+          "id": "132-0",
+          "sensAller": false,
+          "destination": "Chapelle des Buis / La Vèze",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "numLignePublic": "24",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "168-1",
+          "sensAller": false,
+          "destination": "Besançon - Chaudanne",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "81",
+      "numLignePublic": "81",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "141-1",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "85",
+      "numLignePublic": "85",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "126-0",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": "ne dessert pas les hameaux de Fontain"
+        },
+        {
+          "id": "126-2",
+          "sensAller": false,
+          "destination": "Fontain - Le Croc",
+          "precisionDestination": "dessert les hameaux de Fontain"
+        }
+      ]
+    },
+    {
+      "id": "86",
+      "numLignePublic": "86",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "121-2",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": "départ Pugey - Les Clairons"
+        },
+        {
+          "id": "121-0",
+          "sensAller": true,
+          "destination": "Besançon",
+          "precisionDestination": ""
+        },
+        {
+          "id": "121-1",
+          "sensAller": false,
+          "destination": "Pugey - Les Clairons",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "98",
+      "numLignePublic": "Ginko Hôpital",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "174-0",
+          "sensAller": true,
+          "destination": "CHU Minjoz",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    },
+    {
+      "id": "406",
+      "numLignePublic": "D406",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "115-0",
+          "sensAller": true,
+          "destination": "Montfaucon",
+          "precisionDestination": ""
+        },
+        {
+          "id": "115-1",
+          "sensAller": false,
+          "destination": "Chamars",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "CHAMARS2": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-61",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "numLignePublic": "9",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "23-0",
+          "sensAller": false,
+          "destination": "Tilleroyes",
+          "precisionDestination": "par Chamars"
+        }
+      ]
+    },
+    {
+      "id": "81",
+      "numLignePublic": "81",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "141-0",
+          "sensAller": false,
+          "destination": "Nancray - Les Pins",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "82",
+      "numLignePublic": "82",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "121-1",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": ""
+        },
+        {
+          "id": "121-0",
+          "sensAller": false,
+          "destination": "Montfaucon - La Vierge",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "83",
+      "numLignePublic": "83",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "137-1",
+          "sensAller": true,
+          "destination": "Besançon - Pôle Chamars",
+          "precisionDestination": "Départ Saône Etoile"
+        },
+        {
+          "id": "137-0",
+          "sensAller": false,
+          "destination": "Saône / Mamirolle",
+          "precisionDestination": "Destination Saône Etoile"
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "numLignePublic": "D2",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "143-0",
+          "sensAller": true,
+          "destination": "Chamars",
+          "precisionDestination": ""
+        },
+        {
+          "id": "143-1",
+          "sensAller": false,
+          "destination": "Tilleroyes",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "CHAMCITA": [
+    {
+      "id": "27",
+      "numLignePublic": "Ginko Citadelle",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "83-1",
+          "sensAller": true,
+          "destination": "Citadelle",
+          "precisionDestination": ""
+        },
+        {
+          "id": "83-2",
+          "sensAller": false,
+          "destination": "Pôle Chamars",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_cham1": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_cham2": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "GAREVIO1": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-61",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "numLignePublic": "L3",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "209-10",
+          "sensAller": true,
+          "destination": "Centre-ville - 8 Septembre",
+          "precisionDestination": "par Campus et Gare Viotte"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "numLignePublic": "L5",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "173-4",
+          "sensAller": true,
+          "destination": "Bregille",
+          "precisionDestination": "par Gare Viotte et République"
+        }
+      ]
+    },
+    {
+      "id": "35",
+      "numLignePublic": "D5",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "115-0",
+          "sensAller": false,
+          "destination": "Gare Viotte",
+          "precisionDestination": "par Lycée Ledoux"
+        }
+      ]
+    }
+  ],
+  "GAREVIO2": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-62",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "numLignePublic": "L3",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "209-14",
+          "sensAller": false,
+          "destination": "Pôle Temis",
+          "precisionDestination": "par Gare Viotte et Campus"
+        },
+        {
+          "id": "209-8",
+          "sensAller": false,
+          "destination": "Pôle Temis",
+          "precisionDestination": "par Gare Viotte et Campus"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "numLignePublic": "L5",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "173-3",
+          "sensAller": false,
+          "destination": "St Claude",
+          "precisionDestination": "par République et Gare Viotte"
+        }
+      ]
+    },
+    {
+      "id": "98",
+      "numLignePublic": "Ginko Hôpital",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "174-0",
+          "sensAller": true,
+          "destination": "CHU Minjoz",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    },
+    {
+      "id": "35",
+      "numLignePublic": "D5",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "115-1",
+          "sensAller": true,
+          "destination": "Founottes",
+          "precisionDestination": "par Lycée Ledoux"
+        }
+      ]
+    }
+  ],
+  "t_gvio1": [
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_gvio2": [
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "ILDFRAN1": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-61",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "numLignePublic": "L4",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "172-3",
+          "sensAller": true,
+          "destination": "Pôle Orchamps",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        },
+        {
+          "id": "172-4",
+          "sensAller": true,
+          "destination": "Pôle Orchamps",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    },
+    {
+      "id": "41",
+      "numLignePublic": "D11",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "142-0",
+          "sensAller": true,
+          "destination": "Lycée P.A Pâris",
+          "precisionDestination": "via Besançon - Pôle Temis"
+        }
+      ]
+    }
+  ],
+  "ILDFRAN3": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-62",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "numLignePublic": "L4",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "172-0",
+          "sensAller": false,
+          "destination": "Châteaufarine",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ]
+    },
+    {
+      "id": "98",
+      "numLignePublic": "Ginko Hôpital",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "174-0",
+          "sensAller": true,
+          "destination": "CHU Minjoz",
+          "precisionDestination": "par Centre-ville - Granvelle"
+        }
+      ]
+    },
+    {
+      "id": "41",
+      "numLignePublic": "D11",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "142-1",
+          "sensAller": false,
+          "destination": "Planoise",
+          "precisionDestination": "via Besançon - pôle Temis"
+        }
+      ]
+    }
+  ],
+  "t_idf1": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_idf2": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "REPUBL2": [
+    {
+      "id": "110",
+      "numLignePublic": "Plan B",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "53-61",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "numLignePublic": "L3",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "209-10",
+          "sensAller": true,
+          "destination": "Centre-ville - 8 Septembre",
+          "precisionDestination": "par Campus et Gare Viotte"
+        },
+        {
+          "id": "209-8",
+          "sensAller": false,
+          "destination": "Pôle Temis",
+          "precisionDestination": "par Gare Viotte et Campus"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "numLignePublic": "L4",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "172-0",
+          "sensAller": false,
+          "destination": "Châteaufarine",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "numLignePublic": "L5",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "173-4",
+          "sensAller": true,
+          "destination": "Bregille",
+          "precisionDestination": "par Gare Viotte et République"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "numLignePublic": "L6",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "242-3",
+          "sensAller": false,
+          "destination": "Founottes",
+          "precisionDestination": "par Centre-ville - 8 Septembre"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "numLignePublic": "11",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "73-1",
+          "sensAller": true,
+          "destination": "Rivotte",
+          "precisionDestination": "par Orchamps et République"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "numLignePublic": "12",
+      "modeTransport": 0,
+      "variantes": [
+        {
+          "id": "46-6",
+          "sensAller": true,
+          "destination": "Prés de Vaux",
+          "precisionDestination": "par Chemin Français et République"
+        }
+      ]
+    }
+  ],
+  "t_repu1": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Chalezeule",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-0",
+          "sensAller": true,
+          "destination": "Gare Viotte",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ],
+  "t_repu2": [
+    {
+      "id": "101",
+      "numLignePublic": "T1",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "numLignePublic": "T2",
+      "modeTransport": 1,
+      "variantes": [
+        {
+          "id": "15-1",
+          "sensAller": false,
+          "destination": "Hauts du Chazal",
+          "precisionDestination": ""
+        }
+      ]
+    }
+  ]
+}

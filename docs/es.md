@@ -2,7 +2,7 @@
 
 ## Presentación
 
-Esta integración trae **Ginko**, la red de autobuses y tranvía del Gran Besanzón, a Gladys: los **próximos pasos en tiempo real** en hasta tres paradas de tu elección, filtrados por línea y dirección, y el **tráfico** de hasta seis líneas (normal, con incidencias, interrumpida, con los avisos de Ginko). Cada parada y cada línea se convierte en un dispositivo que puedes mostrar en un panel y usar en escenas.
+Esta integración trae **Ginko**, la red de autobuses y tranvía del Gran Besanzón, a Gladys: los **próximos pasos en tiempo real** en las paradas que elijas (tres en el formulario, hasta 20 más con un botón), filtrados por línea y dirección, y el **tráfico** de hasta seis líneas (normal, con incidencias, interrumpida, con los avisos de Ginko). Cada parada y cada línea se convierte en un dispositivo que puedes mostrar en un panel y usar en escenas.
 
 Los datos proceden de la **API de datos abiertos de Ginko** (Keolis Besançon Mobilités, para Grand Besançon Métropole), bajo licencia ODbL. Las paradas se leen cada minuto por defecto (cada 10 minutos mientras una parada no anuncia nada, de noche), el tráfico cada 5 minutos. Las líneas y paradas de la red las guarda la integración y las vuelve a leer una vez al día y una vez a la semana.
 
@@ -25,7 +25,9 @@ Es una integración **cloud**: contacta con `api.ginko.voyage` con tu clave. Nad
 | Lectura de las paradas | Cada 30 segundos, minuto, 2 minutos o 5 minutos.                                                                                  |
 | Idioma de los textos   | Nombres de los dispositivos, resúmenes y salidas de las escenas. Los nombres de paradas y los avisos de Ginko siguen en francés.  |
 
-El botón **Buscar una parada** da los nombres exactos de las paradas que contienen algunas palabras, con el identificador de cada lado de la calle. Un nombre que Ginko escribe de otra forma se encuentra igualmente («Pôle Temis» da «Temis»). **Probar la conexión** comprueba la clave y lee al momento cada parada y línea.
+El botón **Buscar una parada** da los nombres exactos de las paradas que contienen algunas palabras, con el identificador de cada lado de la calle y las direcciones que allí se sirven («BQTSO01 → Prés de Vaux (12), Trey (D4)»): copia el identificador del lado donde subes. Un nombre que Ginko escribe de otra forma se encuentra igualmente («Pôle Temis» da «Temis»). **Probar la conexión** comprueba la clave y lee al momento cada parada y línea.
+
+Más paradas que las tres del formulario (casa, trabajo…): **Añadir una parada** usa los mismos tres campos — parada, línea, dirección — y sigue hasta 20 paradas más. **Listar las paradas** muestra todas las paradas seguidas, numeradas; **Quitar una parada** usa ese número (o el nombre). Las paradas añadidas se guardan en la configuración de Gladys, así que siguen sus copias de seguridad.
 
 ## Uso
 
@@ -42,7 +44,7 @@ Cuando el vehículo no está localizado, Ginko da el horario teórico: la integr
 
 ![El widget Pasos de Ginko en Gare Viotte y el widget Tráfico Ginko de cinco líneas (ilustración generada, no una captura de pantalla)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.es.png)
 
-- **Pasos de Ginko**: los próximos pasos de una parada, como las pantallas de las paradas: línea, destino, espera u hora, «sin parada», los horarios teóricos en gris. Elige una parada seguida, o escribe cualquier parada (y una línea) en los ajustes del widget.
+- **Pasos de Ginko**: los próximos pasos de una parada, en compacto: una fila por línea y destino con sus próximos pasos seguidos («1 · 9 · 27 min», «23:32», «Non desservi»), los horarios teóricos en gris. El ajuste **Trayectos mostrados** fija el número de filas. Elige una parada seguida, o escribe cualquier parada (y una línea) en los ajustes del widget.
 - **Tráfico Ginko**: el estado de cada línea y después los avisos de Ginko; toca una tarjeta para ver el texto completo y el enlace a ginko.voyage. Las líneas seguidas, o las escritas en los ajustes.
 
 ### Escenas

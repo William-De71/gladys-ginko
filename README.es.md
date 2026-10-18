@@ -17,11 +17,11 @@ Documentación de usuario: [English](docs/en.md) · [Français](docs/fr.md) · [
 
 ## Funciones
 
-- **Un dispositivo por parada seguida** (hasta tres), escrita por su nombre — ambos lados de la calle — o por su identificador — un solo lado — y filtrada por **línea** y **dirección**: próximo paso, espera de los dos próximos pasos, pasos sin parada.
+- **Un dispositivo por parada seguida** (tres en el formulario, hasta 20 más con el botón **Añadir una parada**), escrita por su nombre — ambos lados de la calle — o por su identificador — un solo lado — y filtrada por **línea** y **dirección**: próximo paso, espera de los dos próximos pasos, pasos sin parada.
 - **Un dispositivo por línea seguida** (hasta seis): su tráfico (normal, con incidencias, interrumpida…) y las incidencias en curso.
 - **5 disparadores de escena**, **2 acciones de escena** y **2 widgets del panel** (abajo).
 - Paradas leídas cada minuto por defecto (de 30 s a 5 min, cada 10 min de noche cuando no se anuncia nada), tráfico cada 5 minutos; líneas y paradas de la red guardadas en `/data`.
-- Botones de configuración: probar la conexión, buscar una parada (nombres exactos e identificadores), diagnóstico.
+- Botones de configuración: probar la conexión, buscar una parada (nombres exactos, identificadores y direcciones de cada lado de la calle), añadir / quitar / listar paradas, diagnóstico.
 - Cuatro idiomas en todas partes: inglés, francés, alemán, español.
 
 ## Funcionamiento
@@ -118,11 +118,11 @@ Ejemplos:
 | Lectura de las paradas | 30 s, 1 min (por defecto), 2 min o 5 min.                                                    |
 | Idioma de los textos   | Nombres de los dispositivos, resúmenes y salidas de las escenas.                             |
 
-Botones: **Probar la conexión**, **Buscar una parada** (nombres exactos e identificadores de cada lado de la calle) y **Diagnóstico** (escribe las paradas, líneas, últimos pasos y errores en la pestaña Registros, nunca la clave).
+Botones: **Probar la conexión**, **Buscar una parada** (nombres exactos, identificadores y direcciones de cada lado de la calle), **Añadir una parada**, **Quitar una parada**, **Listar las paradas** (las paradas más allá de las tres del formulario, guardadas en la configuración de Gladys) y **Diagnóstico** (escribe las paradas, líneas, últimos pasos y errores en la pestaña Registros, nunca la clave).
 
 ## Uso
 
-1. Escribe tu clave de API, de una a tres paradas (con su línea y dirección si quieres) y las líneas que seguir, y guarda.
+1. Escribe tu clave de API, de una a tres paradas — más con **Añadir una parada** — (con su línea y dirección si quieres) y las líneas que seguir, y guarda.
 2. En la pestaña **Descubrir**, crea los dispositivos «Ginko …».
 3. Añade los widgets **Pasos de Ginko** y **Tráfico Ginko** a un panel, y crea escenas con los disparadores de arriba.
 

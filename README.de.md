@@ -17,11 +17,11 @@ Benutzerdokumentation: [English](docs/en.md) · [Français](docs/fr.md) · [Deut
 
 ## Funktionen
 
-- **Ein Gerät pro verfolgter Haltestelle** (bis zu drei), per Name — beide Straßenseiten — oder Kennung — eine Seite — eingegeben und nach **Linie** und **Richtung** gefiltert: nächste Abfahrt, Wartezeit der nächsten zwei Abfahrten, Fahrten ohne Halt.
+- **Ein Gerät pro verfolgter Haltestelle** (drei im Formular, bis zu 20 weitere mit der Schaltfläche **Haltestelle hinzufügen**), per Name — beide Straßenseiten — oder Kennung — eine Seite — eingegeben und nach **Linie** und **Richtung** gefiltert: nächste Abfahrt, Wartezeit der nächsten zwei Abfahrten, Fahrten ohne Halt.
 - **Ein Gerät pro verfolgter Linie** (bis zu sechs): ihre Verkehrslage (normal, gestört, unterbrochen…) und die aktuellen Störungen.
 - **5 Szenen-Auslöser**, **2 Szenen-Aktionen** und **2 Dashboard-Widgets** (siehe unten).
 - Haltestellen standardmäßig jede Minute gelesen (30 s bis 5 min, nachts alle 10 min, wenn nichts angekündigt ist), Verkehrslage alle 5 Minuten; Linien und Haltestellen des Netzes in `/data` gespeichert.
-- Konfigurationsschaltflächen: Verbindung testen, Haltestelle suchen (genaue Namen und Kennungen), Diagnose.
+- Konfigurationsschaltflächen: Verbindung testen, Haltestelle suchen (genaue Namen, Kennungen und Fahrtrichtungen jeder Straßenseite), Haltestellen hinzufügen / entfernen / auflisten, Diagnose.
 - Vier Sprachen überall: Englisch, Französisch, Deutsch, Spanisch.
 
 ## Funktionsweise
@@ -118,11 +118,11 @@ Beispiele:
 | Abfrage der Haltestellen | 30 s, 1 min (Standard), 2 min oder 5 min.                                                  |
 | Sprache der Texte        | Gerätenamen, Zusammenfassungen und Ausgaben der Szenen.                                    |
 
-Schaltflächen: **Verbindung testen**, **Haltestelle suchen** (genaue Namen und Kennungen jeder Straßenseite) und **Diagnose** (schreibt Haltestellen, Linien, letzte Abfahrten und Fehler in den Tab Protokolle, nie den Schlüssel).
+Schaltflächen: **Verbindung testen**, **Haltestelle suchen** (genaue Namen, Kennungen und Fahrtrichtungen jeder Straßenseite), **Haltestelle hinzufügen**, **Haltestelle entfernen**, **Haltestellen auflisten** (die Haltestellen über die drei des Formulars hinaus, in der Gladys-Konfiguration gespeichert) und **Diagnose** (schreibt Haltestellen, Linien, letzte Abfahrten und Fehler in den Tab Protokolle, nie den Schlüssel).
 
 ## Verwendung
 
-1. Gib deinen API-Schlüssel, ein bis drei Haltestellen (mit Linie und Richtung, wenn du willst) und die zu verfolgenden Linien ein und speichere.
+1. Gib deinen API-Schlüssel, ein bis drei Haltestellen — mehr mit **Haltestelle hinzufügen** — (mit Linie und Richtung, wenn du willst) und die zu verfolgenden Linien ein und speichere.
 2. Erstelle im Tab **Entdecken** die Geräte „Ginko …“.
 3. Füge die Widgets **Ginko-Abfahrten** und **Ginko-Verkehrslage** einem Dashboard hinzu und baue Szenen mit den Auslösern oben.
 

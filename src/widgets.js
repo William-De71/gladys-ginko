@@ -2,10 +2,11 @@
 // Dashboard widgets of the Ginko integration.
 //
 //   - `departures`  the next passages of a stop, like the screens of the
-//                   stops: line, destination, and a badge — 3 min, 23:32,
-//                   not served. A followed stop (chosen among the devices),
-//                   or any stop typed in the widget settings (with an
-//                   optional line);
+//                   stops, compact: one row per line and destination, its
+//                   next passages on one line — 1 · 9 · 27 min, 23:32, not
+//                   served —, timetable times in grey. A followed stop
+//                   (chosen among the devices), or any stop typed in the
+//                   widget settings (with an optional line);
 //   - `traffic`     the state of lines — normal, disrupted, interrupted —
 //                   then their traffic messages; a tap opens the full text.
 //                   The followed lines, or the ones typed in the settings.
@@ -14,7 +15,7 @@
 
 import { WIDGET_COLORS } from '@gladysassistant/integration-sdk';
 import { t, lineStateText, passageShort } from './i18n.js';
-import { minutesLeft, servedPassages } from './departures.js';
+import { minutesLeft, routeOf } from './departures.js';
 import { STATES } from './traffic.js';
 import { formatTime } from './time.js';
 
@@ -31,6 +32,9 @@ const TTL_SECONDS = {
 };
 
 const BOARD_COUNT = { min: 1, max: 8, default: 6 };
+// Characters a status row holds on one line in a dashboard column: beyond,
+// the core cuts the value. A route then drops its last passages.
+const ROW_CHARACTERS = 46;
 const MAX_LIST_ITEMS = 8;
 const MAX_STATUS_ITEMS = 10;
 const STATE_COLORS = {
@@ -81,29 +85,88 @@ function messageContent(message, ttl = TTL_SECONDS.message) {
 }
 
 /**
- * @description The badge of a passage.
- * @param {object} passage - The passage.
- * @param {object} options - `{ language, now, timeZone }`.
- * @returns {{ text: string, color: string }} The badge.
+ * @description The rows of the "departures" widget: one per line and
+ * destination, its next passages on one line, soonest route first.
+ * @param {object[]} passages - The passages to come, soonest first.
+ * @returns {object[][]} The passages of each route.
  */
-function badgeOf(passage, options) {
-  if (!passage.served) {
-    return {
-      text: clip(passage.reason || t('badgeNotServed', options.language), 16),
-      color: WIDGET_COLORS.DANGER,
-    };
+function routesOf(passages) {
+  const byRoute = new Map();
+  for (const passage of passages) {
+    const route = routeOf(passage);
+    byRoute.set(route, [...(byRoute.get(route) ?? []), passage]);
   }
-  const color = passage.reliable ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.NEUTRAL;
-  return { text: clip(passageShort(passage, options), 16), color };
+  return [...byRoute.values()];
 }
 
 /**
- * @description The "departures" widget.
+ * @description The times of one route, as on the screens of the stops, on one
+ * line: "1 · 9 · 27 min", "23:32 · 23:47", "Non desservi". In a route mixing
+ * located vehicles and timetable times, the timetable ones carry a star.
+ * @param {object[]} passages - The passages of the route.
+ * @param {object} options - `{ language, now, timeZone }`.
+ * @returns {{ value: string, starred: boolean }} The value of the row.
+ */
+function routeValue(passages, options) {
+  const timetable = passages.filter((passage) => passage.served && !passage.reliable);
+  const mixed = timetable.length > 0 && timetable.length < passages.length;
+  const star = (passage) => (mixed && passage.served && !passage.reliable ? '*' : '');
+  // A run of waits shares its unit: "10 · 33 min · 23:29".
+  const parts = [];
+  let run = [];
+  const flush = () => {
+    if (run.length) {
+      parts.push(`${run.join(' · ')} ${t('minutesShort', options.language)}`);
+      run = [];
+    }
+  };
+  for (const passage of passages) {
+    const minutes = minutesLeft(passage, options.now);
+    // A note ("Bus complet") stays next to its own time.
+    if (passage.served && !passage.note && passage.kind !== 'time' && minutes > 0 && minutes < 60) {
+      run.push(`${minutes}${star(passage)}`);
+      continue;
+    }
+    flush();
+    const text = passage.served
+      ? passageShort(passage, options)
+      : passage.reason || t('badgeNotServed', options.language);
+    const part = `${text}${star(passage)}${passage.note ? ` (${passage.note})` : ''}`;
+    // "Non desservi · Non desservi" says it once.
+    if (part !== parts[parts.length - 1]) {
+      parts.push(part);
+    }
+  }
+  flush();
+  let value = parts.join(' · ');
+  // Ginko asks to say it when no vehicle of the route is located.
+  if (timetable.length > 0 && !mixed) {
+    value = `${value} · ${t('timetableShort', options.language)}`;
+  }
+  return { value: clip(value, 40), starred: mixed };
+}
+
+/**
+ * @description The colour of a row, from its next passage: located, timetable
+ * (grey, the request of Ginko) or not served.
+ * @param {object} passage - The next passage of the route.
+ * @returns {string} A WIDGET_COLORS value.
+ */
+function rowColor(passage) {
+  if (!passage.served) {
+    return WIDGET_COLORS.DANGER;
+  }
+  return passage.reliable ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.NEUTRAL;
+}
+
+/**
+ * @description The "departures" widget: the stop, then one compact row per
+ * line and destination, like the screens of the stops.
  * @param {object} options - Options.
  * @param {string} options.title - The name of the stop.
  * @param {object[]} options.passages - Its passages.
  * @param {number} options.readAt - When they were read (ms).
- * @param {number} options.count - How many passages to show.
+ * @param {number} options.count - How many routes (rows) to show.
  * @param {string} options.language - The user language.
  * @param {number} options.now - Now (ms).
  * @param {string} [options.timeZone] - IANA timezone.
@@ -112,62 +175,45 @@ function badgeOf(passage, options) {
 function buildDeparturesWidget({ title, passages, readAt, count, language, now, timeZone }) {
   const options = { language, now, timeZone };
   const heading = { type: 'text', variant: 'heading', text: clip(title, 40) };
-  const caption = {
-    type: 'text',
-    variant: 'caption',
-    text: t('updatedAt', language, { time: formatTime(readAt, timeZone) }),
-  };
+  const updated = t('updatedAt', language, { time: formatTime(readAt, timeZone) });
   const upcoming = passages.filter((p) => p.at === null || p.at > now - 30000);
   if (upcoming.length === 0) {
     return {
       ttl_seconds: TTL_SECONDS.idle,
       components: [
         heading,
-        {
-          type: 'text',
-          variant: 'body',
-          text: `${t('noPassage', language)}. ${caption.text}.`,
-        },
+        { type: 'text', variant: 'body', text: `${t('noPassage', language)}. ${updated}.` },
       ],
     };
   }
-  const components = [heading];
-  const [next] = servedPassages(upcoming, now);
-  if (next && next.kind !== 'time' && minutesLeft(next, now) < 60) {
-    components.push({
-      type: 'value',
-      value: minutesLeft(next, now),
-      unit: t('minutesShort', language),
-      label: clip(`${t('nextIn', language)} · ${next.line}`, 24),
-      icon: 'clock',
-      color: next.reliable ? WIDGET_COLORS.SUCCESS : WIDGET_COLORS.NEUTRAL,
-    });
-  }
-  components.push({
-    type: 'card-list',
-    display: 'list',
-    items: upcoming.slice(0, Math.min(count, MAX_LIST_ITEMS)).map((passage) => {
-      const details = [
-        passage.via,
-        passage.note,
-        passage.served && !passage.reliable ? t('timetableNote', language) : '',
-        passage.crowd !== null ? t(`crowd_${passage.crowd}`, language) : '',
-      ].filter(Boolean);
-      const item = {
-        title: clip(
-          passage.destination ? `${passage.line} → ${passage.destination}` : passage.line,
-          60,
-        ),
-        badge: badgeOf(passage, options),
-      };
-      if (details.length) {
-        item.subtitle = clip(details.join(' · '), 60);
+  let starred = false;
+  const items = routesOf(upcoming)
+    .slice(0, Math.min(count, MAX_STATUS_ITEMS))
+    .map((route) => {
+      const [next] = route;
+      const label = clip(next.destination ? `${next.line} → ${next.destination}` : next.line, 40);
+      let shown = route;
+      let row = routeValue(shown, options);
+      while (shown.length > 1 && label.length + row.value.length > ROW_CHARACTERS) {
+        shown = shown.slice(0, -1);
+        row = routeValue(shown, options);
       }
-      return item;
-    }),
-  });
-  components.push(caption);
-  return { ttl_seconds: TTL_SECONDS.departures, components };
+      starred = starred || row.starred;
+      return {
+        label,
+        value: row.value,
+        color: rowColor(next),
+      };
+    });
+  const caption = starred ? `${updated} · * ${t('timetableShort', language)}` : updated;
+  return {
+    ttl_seconds: TTL_SECONDS.departures,
+    components: [
+      heading,
+      { type: 'text', variant: 'caption', text: clip(caption, 80) },
+      { type: 'status', items },
+    ],
+  };
 }
 
 /**
@@ -253,7 +299,7 @@ export {
   clip,
   messageContent,
   readCount,
-  badgeOf,
+  routeValue,
   buildDeparturesWidget,
   buildTrafficWidget,
 };

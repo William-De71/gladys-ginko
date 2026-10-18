@@ -3,9 +3,10 @@
 //
 // Brings the bus and tram network of Besançon (Ginko) into Gladys, through
 // its open data API (a free key):
-//   - devices (device.js): one per followed stop — up to three, filtered by
-//     line and direction — with the next passage and the waits; one per
-//     followed line — up to six — with its traffic;
+//   - devices (device.js): one per followed stop — the three of the form and
+//     the ones added with the "Add a stop" button, filtered by line and
+//     direction — with the next passage and the waits; one per followed
+//     line — up to six — with its traffic;
 //   - scene triggers (events.js): departure soon, stop not served, line
 //     disrupted, line back to normal, new traffic message;
 //   - scene actions: read the next passages of a stop, read the traffic of a
@@ -30,9 +31,10 @@ import {
   parseLines,
   INTERNAL_KEYS,
   AUTO_LANGUAGE,
+  MAX_ADDED_STOPS,
 } from './config.js';
 import { createGinkoClient } from './ginko-api.js';
-import { createNetwork } from './network.js';
+import { createNetwork, fold } from './network.js';
 import { createStore, DEFAULT_PATH } from './store.js';
 import { parsePassages, servedPassages } from './departures.js';
 import { parseTraffic, lineTraffic } from './traffic.js';
@@ -75,6 +77,9 @@ import { t, all, lineStateText, passageWhen, LANGUAGES } from './i18n.js';
 const ACTIONS = {
   TEST_CONNECTION: 'test_connection',
   SEARCH_STOP: 'search_stop',
+  ADD_STOP: 'add_stop',
+  REMOVE_STOP: 'remove_stop',
+  LIST_STOPS: 'list_stops',
   DIAGNOSTIC: 'diagnostic',
 };
 const SCENE_ACTIONS = {
@@ -94,9 +99,45 @@ const TRAFFIC_MAX_AGE_MS = 3 * MINUTE_MS;
 // Names that could not be resolved for a network reason are tried again.
 const RESOLVE_RETRY_MS = 5 * MINUTE_MS;
 const DIAGNOSTIC_CHUNK = 3000;
+// "Find a stop" reads the directions of this many stops (one request each);
+// the user narrows the name for the others.
+const SEARCH_ROUTES_MAX = 12;
+const SEARCH_DESTINATIONS_MAX = 5;
+const ACTION_TEXT_MAX = 1500;
 const { version: VERSION } = JSON.parse(
   readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
 );
+
+/**
+ * @description The directions of one stop, for "Find a stop".
+ * @param {Array<{ destination: string, lines: string[] }>} routes - The directions.
+ * @returns {string} "Prés de Vaux (12), Trey (D4)".
+ * @example
+ * routesText([{ destination: 'Trey', lines: ['D4'] }]); // -> 'Trey (D4)'
+ */
+function routesText(routes) {
+  if (routes.length === 0) {
+    return '–';
+  }
+  const shown = routes
+    .slice(0, SEARCH_DESTINATIONS_MAX)
+    .map(({ destination, lines }) => `${destination} (${lines.join(', ')})`);
+  return routes.length > SEARCH_DESTINATIONS_MAX ? `${shown.join(', ')}, …` : shown.join(', ');
+}
+
+/**
+ * @description Cut a text of several lines at a line break, under a bound.
+ * @param {string} text - The text.
+ * @param {number} max - The bound.
+ * @returns {string} The whole lines that fit, then "…".
+ */
+function clipLines(text, max) {
+  if (text.length <= max) {
+    return text;
+  }
+  const cut = text.lastIndexOf('\n', max - 2);
+  return `${text.slice(0, cut > 0 ? cut : max - 2)}\n…`;
+}
 
 /**
  * @description Register every handler of the integration on a Gladys client.
@@ -124,6 +165,10 @@ function createApp(
   } = {},
 ) {
   let config = normalizeConfig();
+  // The raw values last read, internal keys included: the base of setConfig.
+  let rawConfig = {};
+  // The stops added with the buttons, one change at a time.
+  let writingStops = Promise.resolve();
   // Language of the last widget request: the fallback of the texts Gladys does
   // not ask for in a language, when the `language` setting is `auto`. French
   // until a widget is shown: the network serves Besançon.
@@ -131,6 +176,9 @@ function createApp(
   let createdDevices = new Set();
   // The followed stops and lines, resolved, and what Ginko does not know.
   let stops = [];
+  // config.stops[i] -> its followed stop (null when unknown to Ginko), for
+  // "List the stops".
+  let entries = [];
   let lines = [];
   let notFound = [];
   // stop key -> { passages, readAt } of its last reading, and its last error.
@@ -318,6 +366,37 @@ function createApp(
   // --- Stops and lines ---------------------------------------------------------------
 
   /**
+   * @description Resolve one stop of the configuration.
+   * @param {object} entry - `{ slot, added, stop, line, direction }`.
+   * @returns {Promise<object>} The followed stop, or `{ unknown }`: the typed
+   * stop or line Ginko does not know.
+   */
+  async function resolveEntry(entry) {
+    const line = entry.line ? await network.resolveLine(entry.line) : null;
+    if (entry.line && !line) {
+      return { unknown: entry.line };
+    }
+    const stop = await network.resolveStop(entry.stop);
+    if (!stop) {
+      return { unknown: entry.stop };
+    }
+    const key = stopKey(stop, line, entry.direction);
+    const followed = {
+      slot: entry.slot,
+      added: entry.added ?? null,
+      stop,
+      line,
+      direction: entry.direction,
+      key,
+    };
+    return {
+      ...followed,
+      name: followedName(followed),
+      deviceId: idsOf(gladys, DEVICE_TYPES.STOP, key).device,
+    };
+  }
+
+  /**
    * @description Resolve the configured stops and lines.
    * @returns {Promise<void>}
    */
@@ -325,35 +404,29 @@ function createApp(
     clearTimeout(resolveTimer);
     if (!config.apiKey) {
       stops = [];
+      entries = [];
       lines = [];
       notFound = [];
       resolveError = null;
       return;
     }
     const resolvedStops = [];
+    const resolvedEntries = [];
     const resolvedLines = [];
     const unknown = [];
     try {
       for (const entry of config.stops) {
-        const line = entry.line ? await network.resolveLine(entry.line) : null;
-        if (entry.line && !line) {
-          unknown.push(entry.line);
+        const followed = await resolveEntry(entry);
+        if (followed.unknown) {
+          unknown.push(followed.unknown);
+          resolvedEntries.push(null);
           continue;
         }
-        const stop = await network.resolveStop(entry.stop);
-        if (!stop) {
-          unknown.push(entry.stop);
-          continue;
+        const known = resolvedStops.find((other) => other.key === followed.key);
+        if (!known) {
+          resolvedStops.push(followed);
         }
-        const key = stopKey(stop, line, entry.direction);
-        if (!resolvedStops.some((followed) => followed.key === key)) {
-          const followed = { slot: entry.slot, stop, line, direction: entry.direction, key };
-          resolvedStops.push({
-            ...followed,
-            name: followedName(followed),
-            deviceId: idsOf(gladys, DEVICE_TYPES.STOP, key).device,
-          });
-        }
+        resolvedEntries.push(known ?? followed);
       }
       for (const typed of config.lines) {
         const line = await network.resolveLine(typed);
@@ -380,6 +453,7 @@ function createApp(
       return;
     }
     stops = resolvedStops;
+    entries = resolvedEntries;
     lines = resolvedLines;
     notFound = unknown;
     for (const key of [...snapshots.keys()]) {
@@ -460,14 +534,20 @@ function createApp(
   /**
    * @description Read the passages of a followed stop.
    * @param {object} followed - The followed stop.
+   * @param {Map} [answers] - The answers of this reading round, by stop: two
+   * followed stops on the same stop (two lines, two directions) share one
+   * request.
    * @returns {Promise<object>} Its snapshot `{ passages, readAt }`.
    */
-  async function readStop(followed) {
+  async function readStop(followed, answers = new Map()) {
     try {
-      const answer = await api.waitTimes(
-        followed.stop.kind === 'stop' ? { id: followed.stop.id } : { name: followed.stop.name },
-        PASSAGES_PER_ROUTE,
-      );
+      const where =
+        followed.stop.kind === 'stop' ? { id: followed.stop.id } : { name: followed.stop.name };
+      const request = where.id ? `i:${where.id}` : `n:${fold(where.name)}`;
+      if (!answers.has(request)) {
+        answers.set(request, api.waitTimes(where, PASSAGES_PER_ROUTE));
+      }
+      const answer = await answers.get(request);
       const readAt = now();
       const snapshot = {
         passages: parsePassages(
@@ -539,12 +619,13 @@ function createApp(
     if (!readingStops) {
       readingStops = (async () => {
         let changed = false;
+        const answers = new Map();
         for (const followed of stops) {
           if (!force && !stopDue(followed)) {
             continue;
           }
           try {
-            await readStop(followed);
+            await readStop(followed, answers);
             await digestStop(followed);
             changed = true;
           } catch (err) {
@@ -883,9 +964,10 @@ function createApp(
     }
     await resolveConfig();
     await publishDiscoveredDevices().catch(() => {});
+    const answers = new Map();
     for (const followed of stops) {
       try {
-        await readStop(followed);
+        await readStop(followed, answers);
         await digestStop(followed);
         const snapshot = snapshots.get(followed.key);
         const [first] = servedPassages(snapshot.passages, now());
@@ -943,8 +1025,187 @@ function createApp(
     if (found.length === 0) {
       return all('searchNone', { query: query.slice(0, 60) });
     }
-    const list = found.map((entry) => `${entry.name} (${entry.ids.join(', ')})`).join(' · ');
-    return all('searchFound', { list: list.slice(0, 800) });
+    // The directions of each side of the street: what tells BQTSO01 from
+    // BQTSO02. A stop whose directions could not be read keeps its id alone.
+    let budget = SEARCH_ROUTES_MAX;
+    let skipped = false;
+    const blocks = [];
+    for (const entry of found) {
+      const sides = [];
+      for (const id of entry.ids) {
+        let routes = null;
+        if (budget > 0) {
+          budget -= 1;
+          routes = await network.routesAt(id).catch((err) => {
+            logger.warn(`Directions of ${id} not read: ${err.message}`);
+            return null;
+          });
+        } else {
+          skipped = true;
+        }
+        sides.push(routes ? `• ${id} → ${routesText(routes)}` : `• ${id}`);
+      }
+      blocks.push([entry.name, ...sides].join('\n'));
+    }
+    const list = clipLines(blocks.join('\n'), ACTION_TEXT_MAX - 300);
+    return Object.fromEntries(
+      LANGUAGES.map((l) => [
+        l,
+        [t('searchFound', l, { list }), skipped ? t('searchMore', l) : '']
+          .filter(Boolean)
+          .join('\n'),
+      ]),
+    );
+  });
+
+  // --- Stops added with the buttons -------------------------------------------------
+
+  const field = (value) => (typeof value === 'string' ? value.trim() : '');
+
+  /**
+   * @description Change the added stops, one change after the other: two quick
+   * buttons never lose a stop. Applied in memory once Gladys saved it.
+   * @param {Function} change - `(added) => Promise<{ next?, message }>`: the new
+   * list (none: nothing to save) and the answer, or a function of nothing
+   * giving it once the stops are read.
+   * @returns {Promise<object>} The answer.
+   */
+  function changeAddedStops(change) {
+    const run = writingStops.then(async () => {
+      const { next, message } = await change(config.addedStops);
+      if (next) {
+        await gladys.setConfig({ [INTERNAL_KEYS.addedStops]: next });
+        rawConfig = { ...rawConfig, [INTERNAL_KEYS.addedStops]: next };
+        config = normalizeConfig(rawConfig);
+        await resolveConfig();
+        await publishDiscoveredDevices().catch((err) =>
+          logger.warn(`Unable to offer the devices: ${err.message}`),
+        );
+        // Only the new stop is due: it has no reading yet.
+        await readStops();
+      }
+      return typeof message === 'function' ? message() : message;
+    });
+    writingStops = run.catch(() => {});
+    return run;
+  }
+
+  /**
+   * @description How a stop of the configuration reads in "List the stops".
+   * @param {object} entry - A stop of `config.stops`.
+   * @param {number} index - Its position.
+   * @param {string} lang - The language.
+   * @returns {string} "2. Bouquet de Soleils [BQTSO01] (formulaire, arrêt 2)".
+   */
+  function entryText(entry, index, lang) {
+    const followed = entries[index];
+    const typed = [entry.stop, entry.line, entry.direction && `→ ${entry.direction}`]
+      .filter(Boolean)
+      .join(' ');
+    const notes = [
+      entry.slot ? t('stopFromForm', lang, { slot: entry.slot }) : '',
+      config.apiKey && entries.length && !followed ? t('stopUnknownMark', lang) : '',
+    ].filter(Boolean);
+    const name = followed?.name ?? typed;
+    return `${index + 1}. ${name}${notes.length ? ` (${notes.join(', ')})` : ''}`;
+  }
+
+  gladys.onAction(ACTIONS.ADD_STOP, async (fields = {}) => {
+    if (!config.apiKey) {
+      return all('noApiKey');
+    }
+    const entry = {
+      stop: field(fields.stop),
+      line: field(fields.line),
+      direction: field(fields.direction),
+    };
+    if (entry.stop.length < 2) {
+      return all('searchTooShort');
+    }
+    return changeAddedStops(async (added) => {
+      if (added.length >= MAX_ADDED_STOPS) {
+        return { message: all('stopsFull', { max: MAX_ADDED_STOPS }) };
+      }
+      let followed;
+      try {
+        followed = await resolveEntry(entry);
+      } catch (err) {
+        return { message: all('statusInvalidKey', (l) => ({ detail: errorText(err, l) })) };
+      }
+      if (followed.unknown) {
+        return { message: all('statusNotFound', { names: followed.unknown.slice(0, 60) }) };
+      }
+      if (stops.some((other) => other.key === followed.key)) {
+        return { message: all('stopAlreadyFollowed', { name: followed.name }) };
+      }
+      // Stored as resolved: the exact name or the id, the public line name.
+      const stored = {
+        stop: followed.stop.kind === 'stop' ? followed.stop.id : followed.stop.name,
+        line: followed.line?.name ?? '',
+        direction: entry.direction,
+      };
+      logger.info(`Stop added: ${followed.name}`);
+      return {
+        next: [...added, stored],
+        message: () => all('stopAdded', { name: followed.name, count: stops.length }),
+      };
+    });
+  });
+
+  gladys.onAction(ACTIONS.REMOVE_STOP, async (fields = {}) => {
+    const query = field(fields.stop);
+    if (!query) {
+      return all('stopRemoveUnknown', { query });
+    }
+    return changeAddedStops(async (added) => {
+      const number = /^#?\d+$/.test(query) ? Number(query.replace('#', '')) : null;
+      let found;
+      if (number !== null) {
+        found = config.stops[number - 1] ? [number - 1] : [];
+      } else {
+        const wanted = fold(query);
+        found = config.stops
+          .map((entry, index) => ({ entry, index, followed: entries[index] }))
+          .filter(
+            ({ entry, followed }) =>
+              fold(entry.stop) === wanted ||
+              (followed && (fold(followed.name) === wanted || fold(followed.stop.name) === wanted)),
+          )
+          .map(({ index }) => index);
+        // The same name in the form and in the added stops: the added one.
+        const fromButtons = found.filter((index) => !config.stops[index].slot);
+        found = fromButtons.length > 0 ? fromButtons : found;
+      }
+      if (found.length === 0) {
+        return { message: all('stopRemoveUnknown', { query: query.slice(0, 60) }) };
+      }
+      if (found.length > 1) {
+        return { message: all('stopRemoveAmbiguous', { query: query.slice(0, 60) }) };
+      }
+      const entry = config.stops[found[0]];
+      const name = entries[found[0]]?.name ?? entry.stop;
+      if (entry.slot) {
+        return { message: all('stopInForm', { name, slot: entry.slot }) };
+      }
+      logger.info(`Stop removed: ${name}`);
+      return {
+        next: added.filter((_, index) => index !== entry.added - 1),
+        message: all('stopRemoved', { name }),
+      };
+    });
+  });
+
+  gladys.onAction(ACTIONS.LIST_STOPS, async () => {
+    if (config.stops.length === 0) {
+      return all('stopsNone');
+    }
+    return all('stopsList', (l) => ({
+      count: config.stops.length,
+      list: clipLines(
+        config.stops.map((entry, index) => entryText(entry, index, l)).join('\n'),
+        ACTION_TEXT_MAX - 100,
+      ),
+    }));
   });
 
   gladys.onAction(ACTIONS.DIAGNOSTIC, async () => {
@@ -958,6 +1219,7 @@ function createApp(
         const snapshot = snapshots.get(followed.key);
         return {
           slot: followed.slot,
+          added: followed.added,
           key: followed.key,
           stop: followed.stop,
           line: followed.line?.name ?? null,
@@ -1038,11 +1300,18 @@ function createApp(
   async function loadConfig(fallback) {
     try {
       const raw = await gladys.getConfig();
+      rawConfig = raw ?? {};
       config = normalizeConfig(raw);
       language = readLanguage(raw, language);
     } catch (err) {
       if (fallback) {
-        config = normalizeConfig(fallback);
+        // The form values may lack the internal keys: never forget the added
+        // stops, the next button would save the list without them.
+        rawConfig = {
+          [INTERNAL_KEYS.addedStops]: rawConfig[INTERNAL_KEYS.addedStops],
+          ...fallback,
+        };
+        config = normalizeConfig(rawConfig);
       }
       logger.error('Unable to read the configuration', err);
     }

@@ -15,6 +15,9 @@
 // Methods used (documentation: https://api.ginko.voyage/APIDoc/):
 //   DR/getLignes.do         lines and their variants (directions), once a day;
 //   DR/getArrets.do         every stop (id, name, position), cached for days;
+//   DR/getVariantesDesservantArret.do
+//                           the lines and directions of one stop (one side
+//                           of the street), for the "Find a stop" button;
 //   TR/getTempsLieu.do      the next passages at a stop (by name: every stop
 //                           of that name, both sides of the street; or by id);
 //   TR/getEtatLignes.do     the traffic state of every line (0 to 6);
@@ -160,6 +163,17 @@ function createGinkoClient({
      * @returns {Promise<object[]>} FormArret objects.
      */
     stops: async () => list(await call('DR/getArrets'), 'getArrets'),
+    /**
+     * @description The lines serving one stop, with only the variants
+     * (directions) that serve it.
+     * @param {string} id - The stop id ("BQTSO01").
+     * @returns {Promise<object[]>} FormLigne objects.
+     */
+    routesAt: async (id) =>
+      list(
+        await call('DR/getVariantesDesservantArret', { idArret: id }),
+        'getVariantesDesservantArret',
+      ),
     /**
      * @description The next passages at a stop.
      * @param {object} target - `{ name }` (every stop of that name) or `{ id }`.

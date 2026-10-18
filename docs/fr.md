@@ -2,7 +2,7 @@
 
 ## Présentation
 
-Cette intégration amène **Ginko**, le réseau de bus et de tram du Grand Besançon, dans Gladys : les **prochains passages en temps réel** à trois arrêts de votre choix au plus, filtrés par ligne et direction, et le **trafic** de six lignes au plus (normal, perturbé, interrompu, avec les messages de Ginko). Chaque arrêt et chaque ligne devient un appareil à afficher sur un tableau de bord et à utiliser dans les scènes.
+Cette intégration amène **Ginko**, le réseau de bus et de tram du Grand Besançon, dans Gladys : les **prochains passages en temps réel** aux arrêts de votre choix (trois dans le formulaire, jusqu’à 20 de plus avec un bouton), filtrés par ligne et direction, et le **trafic** de six lignes au plus (normal, perturbé, interrompu, avec les messages de Ginko). Chaque arrêt et chaque ligne devient un appareil à afficher sur un tableau de bord et à utiliser dans les scènes.
 
 Les données viennent de l’**API open data de Ginko** (Keolis Besançon Mobilités, pour Grand Besançon Métropole), sous licence ODbL. Les arrêts sont lus toutes les minutes par défaut (toutes les 10 minutes quand un arrêt n’annonce rien, la nuit), le trafic toutes les 5 minutes. Les lignes et arrêts du réseau sont gardés par l’intégration et relus une fois par jour et une fois par semaine.
 
@@ -25,7 +25,9 @@ C’est une intégration **cloud** : elle contacte `api.ginko.voyage` avec votre
 | Lecture des arrêts | Toutes les 30 secondes, minutes, 2 minutes ou 5 minutes.                                                                           |
 | Langue des textes  | Noms des appareils, résumés et sorties des scènes. Les noms d’arrêts et les messages de Ginko restent en français.                 |
 
-Le bouton **Chercher un arrêt** donne les noms exacts des arrêts contenant quelques mots, avec l’identifiant de chaque côté de la rue. Un nom que Ginko écrit autrement est trouvé quand même (« Pôle Temis » donne « Temis »). **Tester la connexion** vérifie la clé et lit tout de suite chaque arrêt et chaque ligne.
+Le bouton **Chercher un arrêt** donne les noms exacts des arrêts contenant quelques mots, avec l’identifiant de chaque côté de la rue et les directions qui y sont desservies (« BQTSO01 → Prés de Vaux (12), Trey (D4) ») : copiez l’identifiant du côté où vous montez. Un nom que Ginko écrit autrement est trouvé quand même (« Pôle Temis » donne « Temis »). **Tester la connexion** vérifie la clé et lit tout de suite chaque arrêt et chaque ligne.
+
+Plus d’arrêts que les trois du formulaire (domicile, travail…) : **Ajouter un arrêt** reprend les trois mêmes champs — arrêt, ligne, direction — et suit jusqu’à 20 arrêts de plus. **Lister les arrêts** montre tous les arrêts suivis, numérotés ; **Retirer un arrêt** prend ce numéro (ou le nom). Les arrêts ajoutés sont gardés dans la configuration de Gladys et suivent donc ses sauvegardes.
 
 ## Utilisation
 
@@ -42,7 +44,7 @@ Quand le véhicule n’est pas localisé, Ginko donne l’horaire théorique : l
 
 ![Le widget Passages Ginko à Gare Viotte et le widget Trafic Ginko de cinq lignes (illustration générée, pas une capture d’écran)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.fr.png)
 
-- **Passages Ginko** : les prochains passages d’un arrêt, comme les écrans des arrêts : ligne, destination, attente ou heure, « non desservi », les horaires théoriques en gris. Choisissez un arrêt suivi, ou saisissez n’importe quel arrêt (et une ligne) dans les réglages du widget.
+- **Passages Ginko** : les prochains passages d’un arrêt, en compact : une ligne par ligne de bus et destination, avec ses prochains passages à la suite (« 1 · 9 · 27 min », « 23:32 », « Non desservi »), les horaires théoriques en gris. Le réglage **Trajets affichés** fixe le nombre de lignes. Choisissez un arrêt suivi, ou saisissez n’importe quel arrêt (et une ligne) dans les réglages du widget.
 - **Trafic Ginko** : l’état de chaque ligne, puis les messages de Ginko ; touchez une carte pour le texte complet et le lien vers ginko.voyage. Les lignes suivies, ou celles saisies dans les réglages.
 
 ### Scènes

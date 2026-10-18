@@ -9,7 +9,10 @@
 //     name ("Chamars", "gare viotte") — every stop of that name, both sides
 //     of the street — or by id ("t_cham1", one side only), given by the
 //     "Find a stop" button. A name the list does not hold is asked to the
-//     fuzzy search of the API, once.
+//     fuzzy search of the API, once;
+//   - the directions of a stop (DR/getVariantesDesservantArret): read for the
+//     "Find a stop" button, so that the user can tell the two sides of the
+//     street apart; kept a day.
 //
 // Names are compared folded: no case, no accent, no punctuation.
 // -----------------------------------------------------------------------------
@@ -137,6 +140,33 @@ function findStop(stops, typed) {
 }
 
 /**
+ * @description The directions served at one stop, from the lines serving it.
+ * @param {object[]} raw - FormLigne objects of getVariantesDesservantArret.
+ * @returns {Array<{ destination: string, lines: string[] }>} One entry per
+ * destination, with the public names of its lines, in the order of the API.
+ * @example
+ * routesOf(answer); // -> [{ destination: 'Prés de Vaux', lines: ['12'] }, …]
+ */
+function routesOf(raw) {
+  const byDestination = new Map();
+  for (const line of Array.isArray(raw) ? raw : []) {
+    const name = String(line?.numLignePublic ?? line?.id ?? '');
+    for (const variant of Array.isArray(line?.variantes) ? line.variantes : []) {
+      const destination = String(variant?.destination ?? '').trim();
+      if (!destination || !name) {
+        continue;
+      }
+      const entry = byDestination.get(destination) ?? { destination, lines: [] };
+      if (!entry.lines.includes(name)) {
+        entry.lines.push(name);
+      }
+      byDestination.set(destination, entry);
+    }
+  }
+  return [...byDestination.values()];
+}
+
+/**
  * @description Search stops by name, for the "Find a stop" button.
  * @param {object[]} stops - The known stops.
  * @param {string} query - Words of the name.
@@ -184,6 +214,9 @@ function createNetwork({ api, store, now, isNewDay, logger }) {
     }
     return store.data.network;
   };
+  // stop id -> { routes, readAt }: the lines change from day to day (school
+  // lines, holidays), so a day at most, like the lines.
+  const routesCache = new Map();
 
   /**
    * @description The lines, read again when stale. A failed reading keeps the
@@ -285,6 +318,20 @@ function createNetwork({ api, store, now, isNewDay, logger }) {
      * @returns {Promise<object[]>} `[{ name, ids }]`.
      */
     searchStops: async (query) => searchStops(await stops(), query),
+    /**
+     * @description The directions served at one stop, kept a day.
+     * @param {string} id - The stop id.
+     * @returns {Promise<Array<{ destination: string, lines: string[] }>>} The directions.
+     */
+    async routesAt(id) {
+      const kept = routesCache.get(id);
+      if (kept && now() - kept.readAt < LINES_MAX_AGE_MS && !isNewDay(kept.readAt)) {
+        return kept.routes;
+      }
+      const routes = routesOf(await api.routesAt(id));
+      routesCache.set(id, { routes, readAt: now() });
+      return routes;
+    },
   };
 }
 
@@ -297,6 +344,7 @@ export {
   stopOf,
   findLine,
   findStop,
+  routesOf,
   searchStops,
   createNetwork,
 };

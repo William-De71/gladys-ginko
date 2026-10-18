@@ -17,11 +17,11 @@ User documentation: [English](docs/en.md) · [Français](docs/fr.md) · [Deutsch
 
 ## Features
 
-- **One device per followed stop** (up to three), typed by name — both sides of the street — or by id — one side — and filtered by **line** and **direction**: next passage, wait of the next two passages, passages not serving the stop.
+- **One device per followed stop** (three in the form, up to 20 more with the **Add a stop** button), typed by name — both sides of the street — or by id — one side — and filtered by **line** and **direction**: next passage, wait of the next two passages, passages not serving the stop.
 - **One device per followed line** (up to six): its traffic (normal, disrupted, interrupted…) and the disruptions under way.
 - **5 scene triggers**, **2 scene actions** and **2 dashboard widgets** (below).
 - Stops read every minute by default (30 s to 5 min, every 10 min at night when nothing is announced), traffic every 5 minutes; lines and stops of the network kept in `/data`.
-- Configuration buttons: test the connection, find a stop (exact names and ids), diagnostic.
+- Configuration buttons: test the connection, find a stop (exact names, ids and directions of each side of the street), add / remove / list stops, diagnostic.
 - Four languages everywhere: English, French, German, Spanish.
 
 ## How it works
@@ -118,11 +118,11 @@ Examples:
 | Reading of the stops  | 30 s, 1 min (default), 2 min or 5 min.                                              |
 | Language of the texts | Device names, scene summaries and outputs.                                          |
 
-Buttons: **Test the connection**, **Find a stop** (exact names and ids of each side of the street) and **Diagnostic** (writes the stops, lines, last passages and errors to the Logs tab, never the key).
+Buttons: **Test the connection**, **Find a stop** (exact names, ids and directions of each side of the street), **Add a stop**, **Remove a stop**, **List the stops** (the stops beyond the three of the form, kept in the Gladys configuration) and **Diagnostic** (writes the stops, lines, last passages and errors to the Logs tab, never the key).
 
 ## Usage
 
-1. Enter your API key, one to three stops (with their line and direction if you wish) and the lines to follow, then save.
+1. Enter your API key, one to three stops — more with **Add a stop** — (with their line and direction if you wish) and the lines to follow, then save.
 2. In the **Discover** tab, create the "Ginko …" devices.
 3. Add the **Ginko departures** and **Ginko traffic** widgets to a dashboard, and build scenes with the triggers above.
 
