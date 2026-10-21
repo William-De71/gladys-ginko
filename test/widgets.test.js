@@ -226,3 +226,56 @@ test('messages and settings', () => {
   assert.equal(readCount(99, BOARD_COUNT), 8);
   assert.equal(readCount('', BOARD_COUNT), 6);
 });
+
+test('departures widget: several stops in one list, a row per stop then its routes', () => {
+  const viotte = parsePassages(VIOTTE.objets, {}, NOW);
+  const boards = [
+    { title: 'Gare Viotte', label: 'Gare Viotte', passages: viotte, readAt: NOW },
+    { title: 'Chamars', label: 'Chamars', passages: [], readAt: NOW - 60000 },
+  ];
+  for (const language of LANGUAGES) {
+    assertValid(
+      buildDeparturesWidget({ boards, count: 8, language, now: NOW, timeZone: TZ }),
+      language,
+    );
+  }
+  const fr = buildDeparturesWidget({ boards, count: 2, language: 'fr', now: NOW, timeZone: TZ });
+  assert.deepEqual(
+    fr.components.map((c) => c.type),
+    ['text', 'text', 'status'],
+    'one heading and one list: the content budget of the core',
+  );
+  const [heading, caption, status] = fr.components;
+  assert.equal(heading.text, 'Gare Viotte · Chamars');
+  assert.equal(caption.text, 'Ginko', 'the times are on the stop rows');
+  assert.deepEqual(
+    status.items.map((item) => [item.icon ?? '', item.label, item.value]),
+    [
+      ['map-pin', 'Gare Viotte', 'lu à 22:19'],
+      ['', 'T2 → Hauts du Chazal', '1 · 9 · 27 min · théorique'],
+      ['', 'L3 → Pôle Temis', '10 · 33 min · 23:29'],
+      ['map-pin', 'Chamars', 'Aucun passage annoncé'],
+    ],
+  );
+  // Each stop keeps at least one route: four routes each at most for two.
+  const wide = buildDeparturesWidget({ boards, count: 8, language: 'en', now: NOW, timeZone: TZ });
+  assert.equal(wide.components[2].items.length, 1 + 4 + 1);
+  const many = Array.from({ length: 7 }, (_, i) => ({ ...boards[0], label: `Stop ${i}` }));
+  const crowded = buildDeparturesWidget({
+    boards: many,
+    count: 8,
+    language: 'en',
+    now: NOW,
+    timeZone: TZ,
+  });
+  assert.equal(crowded.components[2].items.length, 10, 'five stops, one route each');
+  const empty = buildDeparturesWidget({
+    boards: boards.map((board) => ({ ...board, passages: [] })),
+    count: 2,
+    language: 'en',
+    now: NOW,
+    timeZone: TZ,
+  });
+  assert.equal(empty.ttl_seconds, 300);
+  assert.equal(empty.components[0].text, 'Gare Viotte · Chamars');
+});

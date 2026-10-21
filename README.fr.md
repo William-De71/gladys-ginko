@@ -87,7 +87,7 @@ Quand le véhicule n’est pas localisé, Ginko donne l’horaire théorique : l
 
 **Actions de scène** : **prochains passages** d’un arrêt (ligne, destination, attente, heure, le suivant, une phrase) et **trafic d’une ligne** (état, perturbations, premier message, une phrase).
 
-**Widgets** : **Passages Ginko** (un arrêt suivi, ou n’importe quel arrêt saisi dans les réglages) et **Trafic Ginko** (les lignes suivies, ou celles saisies).
+**Widgets** : **Passages Ginko** (un arrêt suivi, plusieurs dans une même liste, ou n’importe quel arrêt saisi dans les réglages) et **Trafic Ginko** (les lignes suivies, ou celles saisies).
 
 Exemples :
 

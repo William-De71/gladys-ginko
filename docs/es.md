@@ -44,7 +44,7 @@ Cuando el vehículo no está localizado, Ginko da el horario teórico: la integr
 
 ![El widget Pasos de Ginko en Gare Viotte y el widget Tráfico Ginko de cinco líneas (ilustración generada, no una captura de pantalla)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.es.png)
 
-- **Pasos de Ginko**: los próximos pasos de una parada, en compacto: una fila por línea y destino con sus próximos pasos seguidos («1 · 9 · 27 min», «23:32», «Non desservi»), los horarios teóricos en gris. El ajuste **Trayectos mostrados** fija el número de filas. Elige una parada seguida, o escribe cualquier parada (y una línea) en los ajustes del widget.
+- **Pasos de Ginko**: los próximos pasos de una parada, en compacto: una fila por línea y destino con sus próximos pasos seguidos («1 · 9 · 27 min», «23:32», «Non desservi»), los horarios teóricos en gris. El ajuste **Trayectos mostrados** fija el número de filas. Elige una parada seguida, o escribe cualquier parada (y una línea) en los ajustes del widget. Con **Varias paradas**, un solo widget muestra varios dispositivos de parada: los dispositivos de una misma parada (uno por línea, por ejemplo) se reúnen bajo su nombre, con sus trayectos del más próximo al más lejano; para paradas distintas, cada fila empieza por su parada. El ajuste **Trayectos mostrados** vale entonces para cada parada, 10 filas como máximo en total.
 - **Tráfico Ginko**: el estado de cada línea y después los avisos de Ginko; toca una tarjeta para ver el texto completo y el enlace a ginko.voyage. Las líneas seguidas, o las escritas en los ajustes.
 
 ### Escenas

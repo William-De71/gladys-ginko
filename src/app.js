@@ -36,7 +36,7 @@ import {
 import { createGinkoClient } from './ginko-api.js';
 import { createNetwork, fold } from './network.js';
 import { createStore, DEFAULT_PATH } from './store.js';
-import { parsePassages, servedPassages } from './departures.js';
+import { parsePassages, servedPassages, routeOf } from './departures.js';
 import { parseTraffic, lineTraffic } from './traffic.js';
 import {
   DEVICE_TYPES,
@@ -647,14 +647,15 @@ function createApp(
    * @description The snapshot of a stop, read again when older than `maxAgeMs`.
    * @param {object} followed - The followed stop.
    * @param {number} maxAgeMs - The freshness wanted.
+   * @param {Map} [answers] - The answers already asked, by stop (see readStop).
    * @returns {Promise<object>} The snapshot.
    */
-  async function snapshotOf(followed, maxAgeMs) {
+  async function snapshotOf(followed, maxAgeMs, answers = new Map()) {
     const snapshot = snapshots.get(followed.key);
     if (snapshot && now() - snapshot.readAt <= maxAgeMs) {
       return snapshot;
     }
-    await readStop(followed);
+    await readStop(followed, answers);
     await digestStop(followed);
     return snapshots.get(followed.key);
   }
@@ -851,6 +852,57 @@ function createApp(
     return { title, ...board };
   }
 
+  /**
+   * @description The followed stops chosen in the `stops` setting of a widget,
+   * grouped by stop: devices of one stop (one per line and direction) make
+   * one board, their routes merged.
+   * @param {unknown} raw - The `multi_select` value: device external ids.
+   * @returns {Promise<object[]>} `[{ title, label, passages, readAt }]`, in the
+   * order chosen; empty when no chosen device is followed any more.
+   */
+  async function followedBoards(raw) {
+    const ids = Array.isArray(raw) ? raw : [];
+    const groups = new Map();
+    for (const id of ids) {
+      const parsed = parseExternalId(id);
+      const followed =
+        parsed?.type === DEVICE_TYPES.STOP ? stops.find((item) => item.key === parsed.key) : null;
+      if (!followed) {
+        continue;
+      }
+      const { stop } = followed;
+      const group = stop.kind === 'stop' ? `i:${stop.id}` : `n:${fold(stop.name)}`;
+      const members = groups.get(group) ?? [];
+      if (!members.includes(followed)) {
+        groups.set(group, [...members, followed]);
+      }
+    }
+    // Two devices of one stop share one request when both need a new reading.
+    const answers = new Map();
+    const boards = [];
+    for (const members of groups.values()) {
+      const snapshots = [];
+      for (const followed of members) {
+        snapshots.push(await snapshotOf(followed, SNAPSHOT_MAX_AGE_MS, answers));
+      }
+      // A route of two chosen devices (all the lines and one of them) once.
+      const passages = new Map();
+      for (const passage of snapshots.flatMap((snapshot) => snapshot.passages)) {
+        passages.set(`${routeOf(passage)}|${passage.at}|${passage.display}`, passage);
+      }
+      const [first] = members;
+      boards.push({
+        title: members.length > 1 ? followedName({ stop: first.stop }) : first.name,
+        label: first.stop.name,
+        passages: [...passages.values()].sort(
+          (a, b) => (a.wait ?? Infinity) - (b.wait ?? Infinity),
+        ),
+        readAt: Math.min(...snapshots.map((snapshot) => snapshot.readAt)),
+      });
+    }
+    return boards;
+  }
+
   gladys.onWidgetGet(WIDGETS.DEPARTURES, async ({ settings = {}, language: lang }) => {
     rememberLanguage(lang);
     if (!config.apiKey) {
@@ -867,11 +919,18 @@ function createApp(
           return messageContent(board.message);
         }
       } else {
-        const followed = target(settings.stop, DEVICE_TYPES.STOP);
-        if (!followed) {
-          return messageContent(t('widgetNoStop', lang));
+        const boards = await followedBoards(settings.stops);
+        if (boards.length > 1) {
+          board = { boards };
+        } else if (boards.length === 1) {
+          board = boards[0];
+        } else {
+          const followed = target(settings.stop, DEVICE_TYPES.STOP);
+          if (!followed) {
+            return messageContent(t('widgetNoStop', lang));
+          }
+          board = { title: followed.name, ...(await snapshotOf(followed, SNAPSHOT_MAX_AGE_MS)) };
         }
-        board = { title: followed.name, ...(await snapshotOf(followed, SNAPSHOT_MAX_AGE_MS)) };
       }
       return buildDeparturesWidget({ ...board, count, language: lang, now: now(), timeZone });
     } catch (err) {

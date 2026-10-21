@@ -44,7 +44,7 @@ Ist das Fahrzeug nicht geortet, liefert Ginko die Fahrplanzeit: Die Integration 
 
 ![Das Widget Ginko-Abfahrten an der Gare Viotte und das Widget Ginko-Verkehrslage für fünf Linien (generierte Illustration, kein Screenshot)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.de.png)
 
-- **Ginko-Abfahrten**: die nächsten Abfahrten einer Haltestelle, kompakt: eine Zeile pro Linie und Ziel mit ihren nächsten Abfahrten hintereinander („1 · 9 · 27 Min.“, „23:32“, „Non desservi“), Fahrplanzeiten in Grau. Die Einstellung **Angezeigte Fahrten** legt die Zahl der Zeilen fest. Wähle eine verfolgte Haltestelle oder gib eine beliebige Haltestelle (und eine Linie) in den Widget-Einstellungen ein.
+- **Ginko-Abfahrten**: die nächsten Abfahrten einer Haltestelle, kompakt: eine Zeile pro Linie und Ziel mit ihren nächsten Abfahrten hintereinander („1 · 9 · 27 Min.“, „23:32“, „Non desservi“), Fahrplanzeiten in Grau. Die Einstellung **Angezeigte Fahrten** legt die Zahl der Zeilen fest. Wähle eine verfolgte Haltestelle oder gib eine beliebige Haltestelle (und eine Linie) in den Widget-Einstellungen ein. Mit **Mehrere Haltestellen** zeigt ein einziges Widget mehrere Haltestellen-Geräte: Die Geräte derselben Haltestelle (zum Beispiel eines pro Linie) werden unter ihrem Namen zusammengefasst, ihre Fahrten nach Abfahrtszeit sortiert; bei verschiedenen Haltestellen beginnt jede Zeile mit ihrer Haltestelle. Die Einstellung **Angezeigte Fahrten** gilt dann pro Haltestelle, insgesamt höchstens 10 Zeilen.
 - **Ginko-Verkehrslage**: der Zustand jeder Linie, dann die Meldungen von Ginko; tippe auf eine Karte für den vollständigen Text und den Link zu ginko.voyage. Die verfolgten Linien oder die in den Einstellungen eingegebenen.
 
 ### Szenen

@@ -242,6 +242,12 @@ const TEXTS = {
   },
 
   // widgets
+  readAt: {
+    en: 'read at {time}',
+    fr: 'lu à {time}',
+    de: 'gelesen um {time}',
+    es: 'leído a las {time}',
+  },
   updatedAt: {
     en: 'Ginko · updated at {time}',
     fr: 'Ginko · mis à jour à {time}',

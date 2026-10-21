@@ -5,7 +5,9 @@
 //                   stops, compact: one row per line and destination, its
 //                   next passages on one line — 1 · 9 · 27 min, 23:32, not
 //                   served —, timetable times in grey. A followed stop
-//                   (chosen among the devices), or any stop typed in the
+//                   (chosen among the devices), several (the devices of
+//                   one stop merged, a row per stop otherwise), or any
+//                   stop typed in the
 //                   widget settings (with an optional line);
 //   - `traffic`     the state of lines — normal, disrupted, interrupted —
 //                   then their traffic messages; a tap opens the full text.
@@ -160,35 +162,17 @@ function rowColor(passage) {
 }
 
 /**
- * @description The "departures" widget: the stop, then one compact row per
- * line and destination, like the screens of the stops.
- * @param {object} options - Options.
- * @param {string} options.title - The name of the stop.
- * @param {object[]} options.passages - Its passages.
- * @param {number} options.readAt - When they were read (ms).
- * @param {number} options.count - How many routes (rows) to show.
- * @param {string} options.language - The user language.
- * @param {number} options.now - Now (ms).
- * @param {string} [options.timeZone] - IANA timezone.
- * @returns {object} The content.
+ * @description The rows of one stop: one compact row per line and
+ * destination, soonest first, each row cut to one line.
+ * @param {object[]} upcoming - The passages to come.
+ * @param {number} count - How many routes (rows).
+ * @param {object} options - `{ language, now, timeZone }`.
+ * @returns {{ items: object[], starred: boolean }} The rows.
  */
-function buildDeparturesWidget({ title, passages, readAt, count, language, now, timeZone }) {
-  const options = { language, now, timeZone };
-  const heading = { type: 'text', variant: 'heading', text: clip(title, 40) };
-  const updated = t('updatedAt', language, { time: formatTime(readAt, timeZone) });
-  const upcoming = passages.filter((p) => p.at === null || p.at > now - 30000);
-  if (upcoming.length === 0) {
-    return {
-      ttl_seconds: TTL_SECONDS.idle,
-      components: [
-        heading,
-        { type: 'text', variant: 'body', text: `${t('noPassage', language)}. ${updated}.` },
-      ],
-    };
-  }
+function boardRows(upcoming, count, options) {
   let starred = false;
   const items = routesOf(upcoming)
-    .slice(0, Math.min(count, MAX_STATUS_ITEMS))
+    .slice(0, count)
     .map((route) => {
       const [next] = route;
       const label = clip(next.destination ? `${next.line} → ${next.destination}` : next.line, 40);
@@ -205,7 +189,85 @@ function buildDeparturesWidget({ title, passages, readAt, count, language, now, 
         color: rowColor(next),
       };
     });
-  const caption = starred ? `${updated} · * ${t('timetableShort', language)}` : updated;
+  return { items, starred };
+}
+
+/**
+ * @description The "departures" widget: the stop, then one compact row per
+ * line and destination, like the screens of the stops. With several stops
+ * (`boards`), still one heading and one list (the content budget of the core
+ * allows one status list and two texts): each stop opens with a row of its
+ * own — its name and the time of its reading —, then its routes.
+ * @param {object} options - Options.
+ * @param {string} [options.title] - The name of the stop.
+ * @param {object[]} [options.passages] - Its passages.
+ * @param {number} [options.readAt] - When they were read (ms).
+ * @param {object[]} [options.boards] - Several stops instead:
+ * `[{ title, label, passages, readAt }]`, `label` the short name of the stop.
+ * @param {number} options.count - How many routes (rows) to show per stop.
+ * @param {string} options.language - The user language.
+ * @param {number} options.now - Now (ms).
+ * @param {string} [options.timeZone] - IANA timezone.
+ * @returns {object} The content.
+ */
+function buildDeparturesWidget({
+  title,
+  passages,
+  readAt,
+  boards = [{ title, passages, readAt }],
+  count,
+  language,
+  now,
+  timeZone,
+}) {
+  const options = { language, now, timeZone };
+  // A stop takes a row of its own and at least one route.
+  const shown = boards.slice(0, Math.floor(MAX_STATUS_ITEMS / 2));
+  const several = shown.length > 1;
+  const nameOf = (board) => board.label ?? board.title;
+  const headingText = several ? [...new Set(shown.map(nameOf))].join(' · ') : shown[0].title;
+  const heading = { type: 'text', variant: 'heading', text: clip(headingText, 40) };
+  // The oldest reading: the widget never claims fresher data than it shows.
+  const oldest = Math.min(...shown.map((board) => board.readAt));
+  const updated = t('updatedAt', language, { time: formatTime(oldest, timeZone) });
+  const upcomingOf = (board) => board.passages.filter((p) => p.at === null || p.at > now - 30000);
+  if (shown.every((board) => upcomingOf(board).length === 0)) {
+    return {
+      ttl_seconds: TTL_SECONDS.idle,
+      components: [
+        heading,
+        { type: 'text', variant: 'body', text: `${t('noPassage', language)}. ${updated}.` },
+      ],
+    };
+  }
+  // The routes of each stop share what the stop rows leave of the list.
+  const perStop = several
+    ? Math.max(1, Math.min(count, Math.floor((MAX_STATUS_ITEMS - shown.length) / shown.length)))
+    : Math.min(count, MAX_STATUS_ITEMS);
+  let starred = false;
+  const items = [];
+  for (const board of shown) {
+    const upcoming = upcomingOf(board);
+    if (several) {
+      items.push({
+        icon: 'map-pin',
+        label: clip(nameOf(board), 40),
+        value: clip(
+          upcoming.length
+            ? t('readAt', language, { time: formatTime(board.readAt, timeZone) })
+            : t('noPassage', language),
+          40,
+        ),
+        color: WIDGET_COLORS.NEUTRAL,
+      });
+    }
+    const rows = boardRows(upcoming, perStop, options);
+    starred = starred || rows.starred;
+    items.push(...rows.items);
+  }
+  // With several stops, each stop row carries its own reading time.
+  const credit = several ? 'Ginko' : updated;
+  const caption = starred ? `${credit} · * ${t('timetableShort', language)}` : credit;
   return {
     ttl_seconds: TTL_SECONDS.departures,
     components: [

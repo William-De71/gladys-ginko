@@ -277,6 +277,7 @@ test('widgets: followed stops, a typed stop, lines; valid in every language', as
   const cases = [
     [WIDGETS.DEPARTURES, {}],
     [WIDGETS.DEPARTURES, { stop: CHAMARS }],
+    [WIDGETS.DEPARTURES, { stops: [VIOTTE, CHAMARS] }],
     [WIDGETS.DEPARTURES, { stop_name: 'viotte', line: 'L5', count: 3 }],
     [WIDGETS.DEPARTURES, { stop_name: 'Nowhere' }],
     [WIDGETS.TRAFFIC, {}],
@@ -499,4 +500,67 @@ test('the added stops are capped', async (t) => {
   t.after(() => none.gladys.fake.shutdown());
   const empty = await none.gladys.fake.action(ACTIONS.LIST_STOPS);
   assert.match(empty.data.message.fr, /Aucun arrêt suivi/);
+});
+
+test('departures widget: several followed stops in one list, one request per stop', async (t) => {
+  const { gladys, api, clock } = await startApp({
+    config: {
+      api_key: KEY,
+      stop_1: 'Gare Viotte',
+      stop_1_line: 'T2',
+      stop_2: 'Chamars',
+      added_stops: [
+        { stop: 'Gare Viotte', line: 'L3', direction: '' },
+        { stop: 'Gare Viotte', line: 'L5', direction: '' },
+      ],
+    },
+  });
+  t.after(() => gladys.fake.shutdown());
+  const T2 = `${PREFIX}:stop:n-gare-viotte_102`;
+  const L3 = `${PREFIX}:stop:n-gare-viotte_3`;
+  const L5 = `${PREFIX}:stop:n-gare-viotte_5`;
+  // Read again: the readings are older than a widget accepts.
+  clock.now += 5 * MINUTE;
+  const reads = () => api.calls.filter((call) => call.method === 'TR/getTempsLieu').length;
+  const before = reads();
+  const one = await gladys.fake.widgetGet(WIDGETS.DEPARTURES, {
+    settings: { stops: [L3, T2, L5, `${PREFIX}:stop:n-gone`] },
+    language: 'fr',
+  });
+  assert.equal(reads() - before, 1, 'the three devices of Gare Viotte share one request');
+  const [heading, caption, status] = one.data.content.components;
+  assert.equal(heading.text, 'Gare Viotte', 'one stop: its name, not one of its lines');
+  assert.match(caption.text, /^Ginko · mis à jour à /);
+  assert.deepEqual(status.items.map((item) => item.label.split(' → ')[0]).sort(), [
+    'L3',
+    'L3',
+    'L5',
+    'L5',
+    'T2',
+  ]);
+  const both = await gladys.fake.widgetGet(WIDGETS.DEPARTURES, {
+    settings: { stops: [T2, CHAMARS, L3] },
+    language: 'en',
+  });
+  assert.deepEqual(validateWidgetContent(both.data.content), []);
+  const [title, , rows] = both.data.content.components;
+  assert.equal(title.text, 'Gare Viotte · Chamars');
+  assert.deepEqual(
+    rows.items.filter((item) => item.icon === 'map-pin').map((item) => item.label),
+    ['Gare Viotte', 'Chamars'],
+    'one row per stop, in the order chosen',
+  );
+  assert.equal(rows.items[0].label, 'Gare Viotte');
+  // One chosen device: the widget of that device, as with the `stop` setting.
+  const single = await gladys.fake.widgetGet(WIDGETS.DEPARTURES, {
+    settings: { stops: [L5] },
+    language: 'en',
+  });
+  assert.equal(single.data.content.components[0].text, 'Gare Viotte (L5)');
+  // No chosen device is followed any more: the `stop` setting.
+  const gone = await gladys.fake.widgetGet(WIDGETS.DEPARTURES, {
+    settings: { stops: [`${PREFIX}:stop:n-gone`], stop: CHAMARS },
+    language: 'en',
+  });
+  assert.equal(gone.data.content.components[0].text, 'Chamars');
 });

@@ -44,7 +44,7 @@ Quand le véhicule n’est pas localisé, Ginko donne l’horaire théorique : l
 
 ![Le widget Passages Ginko à Gare Viotte et le widget Trafic Ginko de cinq lignes (illustration générée, pas une capture d’écran)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.fr.png)
 
-- **Passages Ginko** : les prochains passages d’un arrêt, en compact : une ligne par ligne de bus et destination, avec ses prochains passages à la suite (« 1 · 9 · 27 min », « 23:32 », « Non desservi »), les horaires théoriques en gris. Le réglage **Trajets affichés** fixe le nombre de lignes. Choisissez un arrêt suivi, ou saisissez n’importe quel arrêt (et une ligne) dans les réglages du widget.
+- **Passages Ginko** : les prochains passages d’un arrêt, en compact : une ligne par ligne de bus et destination, avec ses prochains passages à la suite (« 1 · 9 · 27 min », « 23:32 », « Non desservi »), les horaires théoriques en gris. Le réglage **Trajets affichés** fixe le nombre de lignes. Choisissez un arrêt suivi, ou saisissez n’importe quel arrêt (et une ligne) dans les réglages du widget. Avec **Plusieurs arrêts**, un seul widget affiche plusieurs appareils arrêts : les appareils d’un même arrêt (un par ligne, par exemple) sont réunis sous son nom, leurs trajets du plus proche au plus lointain ; pour des arrêts différents, chaque ligne commence par son arrêt. Le réglage **Trajets affichés** vaut alors pour chaque arrêt, 10 lignes au plus en tout.
 - **Trafic Ginko** : l’état de chaque ligne, puis les messages de Ginko ; touchez une carte pour le texte complet et le lien vers ginko.voyage. Les lignes suivies, ou celles saisies dans les réglages.
 
 ### Scènes

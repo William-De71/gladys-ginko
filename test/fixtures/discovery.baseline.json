@@ -450,7 +450,7 @@
     "widgets": [
       {
         "key": "departures",
-        "settings": ["stop", "stop_name", "line", "count"],
+        "settings": ["stop", "stops", "stop_name", "line", "count"],
         "options": {}
       },
       {

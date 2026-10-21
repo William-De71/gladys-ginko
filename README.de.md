@@ -87,7 +87,7 @@ Ist das Fahrzeug nicht geortet, liefert Ginko die Fahrplanzeit: Die Texte sagen 
 
 **Szenen-Aktionen**: **nächste Abfahrten** einer Haltestelle (Linie, Ziel, Wartezeit, Uhrzeit, die folgende, ein Satz) und **Verkehrslage einer Linie** (Zustand, Störungen, erste Meldung, ein Satz).
 
-**Widgets**: **Ginko-Abfahrten** (eine verfolgte Haltestelle oder eine beliebige, in den Einstellungen eingegebene) und **Ginko-Verkehrslage** (die verfolgten Linien oder die eingegebenen).
+**Widgets**: **Ginko-Abfahrten** (eine verfolgte Haltestelle, mehrere in einer Liste oder eine beliebige, in den Einstellungen eingegebene) und **Ginko-Verkehrslage** (die verfolgten Linien oder die eingegebenen).
 
 Beispiele:
 
