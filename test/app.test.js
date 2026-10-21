@@ -545,8 +545,12 @@ test('departures widget: several followed stops in one list, one request per sto
   assert.deepEqual(validateWidgetContent(both.data.content), []);
   const [title, , rows] = both.data.content.components;
   assert.equal(title.text, 'Gare Viotte · Chamars');
-  assert.ok(rows.items.every((item) => /^(Gare Viotte|Chamars) · /.test(item.label)));
-  assert.ok(rows.items.findIndex((item) => item.label.startsWith('Chamars')) > 0);
+  assert.deepEqual(
+    rows.items.filter((item) => item.icon === 'map-pin').map((item) => item.label),
+    ['Gare Viotte', 'Chamars'],
+    'one row per stop, in the order chosen',
+  );
+  assert.equal(rows.items[0].label, 'Gare Viotte');
   // One chosen device: the widget of that device, as with the `stop` setting.
   const single = await gladys.fake.widgetGet(WIDGETS.DEPARTURES, {
     settings: { stops: [L5] },
