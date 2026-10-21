@@ -5,7 +5,8 @@
 //                   stops, compact: one row per line and destination, its
 //                   next passages on one line — 1 · 9 · 27 min, 23:32, not
 //                   served —, timetable times in grey. A followed stop
-//                   (chosen among the devices), or any stop typed in the
+//                   (chosen among the devices), several (their routes
+//                   merged under one heading), or any stop typed in the
 //                   widget settings (with an optional line);
 //   - `traffic`     the state of lines — normal, disrupted, interrupted —
 //                   then their traffic messages; a tap opens the full text.
@@ -160,38 +161,23 @@ function rowColor(passage) {
 }
 
 /**
- * @description The "departures" widget: the stop, then one compact row per
- * line and destination, like the screens of the stops.
- * @param {object} options - Options.
- * @param {string} options.title - The name of the stop.
- * @param {object[]} options.passages - Its passages.
- * @param {number} options.readAt - When they were read (ms).
- * @param {number} options.count - How many routes (rows) to show.
- * @param {string} options.language - The user language.
- * @param {number} options.now - Now (ms).
- * @param {string} [options.timeZone] - IANA timezone.
- * @returns {object} The content.
+ * @description The rows of one stop: one compact row per line and
+ * destination, soonest first, each row cut to one line.
+ * @param {object[]} upcoming - The passages to come.
+ * @param {string} prefix - The stop before each label, when the widget shows
+ * several stops ('' otherwise).
+ * @param {number} count - How many routes (rows).
+ * @param {object} options - `{ language, now, timeZone }`.
+ * @returns {{ items: object[], starred: boolean }} The rows.
  */
-function buildDeparturesWidget({ title, passages, readAt, count, language, now, timeZone }) {
-  const options = { language, now, timeZone };
-  const heading = { type: 'text', variant: 'heading', text: clip(title, 40) };
-  const updated = t('updatedAt', language, { time: formatTime(readAt, timeZone) });
-  const upcoming = passages.filter((p) => p.at === null || p.at > now - 30000);
-  if (upcoming.length === 0) {
-    return {
-      ttl_seconds: TTL_SECONDS.idle,
-      components: [
-        heading,
-        { type: 'text', variant: 'body', text: `${t('noPassage', language)}. ${updated}.` },
-      ],
-    };
-  }
+function boardRows(upcoming, prefix, count, options) {
   let starred = false;
   const items = routesOf(upcoming)
-    .slice(0, Math.min(count, MAX_STATUS_ITEMS))
+    .slice(0, count)
     .map((route) => {
       const [next] = route;
-      const label = clip(next.destination ? `${next.line} → ${next.destination}` : next.line, 40);
+      const routeName = next.destination ? `${next.line} → ${next.destination}` : next.line;
+      const label = clip(prefix ? `${prefix} · ${routeName}` : routeName, 40);
       let shown = route;
       let row = routeValue(shown, options);
       while (shown.length > 1 && label.length + row.value.length > ROW_CHARACTERS) {
@@ -205,13 +191,80 @@ function buildDeparturesWidget({ title, passages, readAt, count, language, now, 
         color: rowColor(next),
       };
     });
+  return { items, starred };
+}
+
+/**
+ * @description The "departures" widget: the stop, then one compact row per
+ * line and destination, like the screens of the stops. With several stops
+ * (`boards`), one heading and one list still (the content budget of the core
+ * allows one status list and two texts): each row starts with its stop.
+ * @param {object} options - Options.
+ * @param {string} [options.title] - The name of the stop.
+ * @param {object[]} [options.passages] - Its passages.
+ * @param {number} [options.readAt] - When they were read (ms).
+ * @param {object[]} [options.boards] - Several stops instead:
+ * `[{ title, label, passages, readAt }]`, `label` the short name of the stop
+ * before its rows.
+ * @param {number} options.count - How many routes (rows) to show per stop.
+ * @param {string} options.language - The user language.
+ * @param {number} options.now - Now (ms).
+ * @param {string} [options.timeZone] - IANA timezone.
+ * @returns {object} The content.
+ */
+function buildDeparturesWidget({
+  title,
+  passages,
+  readAt,
+  boards = [{ title, passages, readAt }],
+  count,
+  language,
+  now,
+  timeZone,
+}) {
+  const options = { language, now, timeZone };
+  const several = boards.length > 1;
+  const headingText = several
+    ? [...new Set(boards.map((board) => board.label ?? board.title))].join(' · ')
+    : boards[0].title;
+  const heading = { type: 'text', variant: 'heading', text: clip(headingText, 40) };
+  // The oldest reading: the widget never claims fresher data than it shows.
+  const oldest = Math.min(...boards.map((board) => board.readAt));
+  const updated = t('updatedAt', language, { time: formatTime(oldest, timeZone) });
+  const upcomingOf = (board) => board.passages.filter((p) => p.at === null || p.at > now - 30000);
+  if (boards.every((board) => upcomingOf(board).length === 0)) {
+    return {
+      ttl_seconds: TTL_SECONDS.idle,
+      components: [
+        heading,
+        { type: 'text', variant: 'body', text: `${t('noPassage', language)}. ${updated}.` },
+      ],
+    };
+  }
+  let starred = false;
+  const items = [];
+  for (const board of boards) {
+    const upcoming = upcomingOf(board);
+    const prefix = several ? (board.label ?? board.title) : '';
+    if (upcoming.length === 0) {
+      items.push({
+        label: clip(prefix, 40),
+        value: clip(t('noPassage', language), 40),
+        color: WIDGET_COLORS.NEUTRAL,
+      });
+      continue;
+    }
+    const rows = boardRows(upcoming, prefix, count, options);
+    starred = starred || rows.starred;
+    items.push(...rows.items);
+  }
   const caption = starred ? `${updated} · * ${t('timetableShort', language)}` : updated;
   return {
     ttl_seconds: TTL_SECONDS.departures,
     components: [
       heading,
       { type: 'text', variant: 'caption', text: clip(caption, 80) },
-      { type: 'status', items },
+      { type: 'status', items: items.slice(0, MAX_STATUS_ITEMS) },
     ],
   };
 }

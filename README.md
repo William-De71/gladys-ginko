@@ -87,7 +87,7 @@ When the vehicle is not located, Ginko gives the timetable time: the texts say "
 
 **Scene actions**: **next passages** of a stop (line, destination, wait, time, the following one, a sentence) and **traffic of a line** (state, disruptions, first message, a sentence).
 
-**Widgets**: **Ginko departures** (a followed stop, or any stop typed in the settings) and **Ginko traffic** (the followed lines, or the ones typed).
+**Widgets**: **Ginko departures** (a followed stop, several in one list, or any stop typed in the settings) and **Ginko traffic** (the followed lines, or the ones typed).
 
 Examples:
 

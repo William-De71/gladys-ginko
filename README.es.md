@@ -87,7 +87,7 @@ Cuando el vehículo no está localizado, Ginko da el horario teórico: los texto
 
 **Acciones de escena**: **próximos pasos** de una parada (línea, destino, espera, hora, el siguiente, una frase) y **tráfico de una línea** (estado, incidencias, primer aviso, una frase).
 
-**Widgets**: **Pasos de Ginko** (una parada seguida, o cualquier parada escrita en los ajustes) y **Tráfico Ginko** (las líneas seguidas, o las escritas).
+**Widgets**: **Pasos de Ginko** (una parada seguida, varias en una lista, o cualquier parada escrita en los ajustes) y **Tráfico Ginko** (las líneas seguidas, o las escritas).
 
 Ejemplos:
 

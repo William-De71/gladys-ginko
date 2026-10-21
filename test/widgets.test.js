@@ -226,3 +226,43 @@ test('messages and settings', () => {
   assert.equal(readCount(99, BOARD_COUNT), 8);
   assert.equal(readCount('', BOARD_COUNT), 6);
 });
+
+test('departures widget: several stops in one list, each row starting with its stop', () => {
+  const viotte = parsePassages(VIOTTE.objets, {}, NOW);
+  const boards = [
+    { title: 'Gare Viotte', label: 'Gare Viotte', passages: viotte, readAt: NOW },
+    { title: 'Chamars', label: 'Chamars', passages: [], readAt: NOW - 60000 },
+  ];
+  for (const language of LANGUAGES) {
+    assertValid(
+      buildDeparturesWidget({ boards, count: 8, language, now: NOW, timeZone: TZ }),
+      language,
+    );
+  }
+  const fr = buildDeparturesWidget({ boards, count: 2, language: 'fr', now: NOW, timeZone: TZ });
+  assert.deepEqual(
+    fr.components.map((c) => c.type),
+    ['text', 'text', 'status'],
+    'one heading and one list: the content budget of the core',
+  );
+  const [heading, caption, status] = fr.components;
+  assert.equal(heading.text, 'Gare Viotte · Chamars');
+  assert.equal(caption.text, 'Ginko · mis à jour à 22:18', 'the oldest reading');
+  assert.deepEqual(
+    status.items.map((item) => [item.label, item.value]),
+    [
+      ['Gare Viotte · T2 → Hauts du Chazal', '1 min · théorique'],
+      ['Gare Viotte · L3 → Pôle Temis', '10 · 33 min'],
+      ['Chamars', 'Aucun passage annoncé'],
+    ],
+  );
+  const empty = buildDeparturesWidget({
+    boards: boards.map((board) => ({ ...board, passages: [] })),
+    count: 2,
+    language: 'en',
+    now: NOW,
+    timeZone: TZ,
+  });
+  assert.equal(empty.ttl_seconds, 300);
+  assert.equal(empty.components[0].text, 'Gare Viotte · Chamars');
+});

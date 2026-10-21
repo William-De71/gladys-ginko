@@ -44,7 +44,7 @@ When the vehicle is not located, Ginko gives the timetable: the integration says
 
 ![The Ginko departures widget at Gare Viotte and the Ginko traffic widget of five lines (generated illustration, not a screenshot)](https://raw.githubusercontent.com/William-De71/gladys-ginko/main/docs/assets/widgets.en.png)
 
-- **Ginko departures**: the next passages of a stop, compact: one row per line and destination with its next passages on one line ("1 · 9 · 27 min", "23:32", "Non desservi"), the timetable times in grey. The setting **Routes shown** sets the number of rows. Choose a followed stop, or type any stop (and a line) in the settings of the widget.
+- **Ginko departures**: the next passages of a stop, compact: one row per line and destination with its next passages on one line ("1 · 9 · 27 min", "23:32", "Non desservi"), the timetable times in grey. The setting **Routes shown** sets the number of rows. Choose a followed stop, or type any stop (and a line) in the settings of the widget. With **Several stops**, one widget shows several stop devices: the devices of one stop (one per line, for instance) are merged under its name, with their routes soonest first; for different stops, each row starts with its stop. The setting **Routes shown** then applies to each stop, up to 10 rows in all.
 - **Ginko traffic**: the state of each line, then the messages of Ginko; tap a card for the full text and the link to ginko.voyage. The followed lines, or the ones typed in the settings.
 
 ### Scenes
