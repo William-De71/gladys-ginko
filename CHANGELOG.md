@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.3.1] - 2026-10-22
+
+### Fixed
+
+- **widgets:** say that the Stop setting stays empty when several stops are ticked ([#2](https://github.com/William-De71/gladys-ginko/pull/2), [bb68cfe](https://github.com/William-De71/gladys-ginko/commit/bb68cfe32e4b88930910fde228b1d19a3abfd8b5))
+
 ## [0.3.0] - 2026-10-21
 
 ### Added
@@ -30,6 +36,7 @@ each release from the Conventional Commits: do not edit it by hand.
 - Cloud transport: the open data API of Ginko (a free key), stops read every 30 seconds to 5 minutes, traffic every 5 minutes; lines and stops of the network kept in /data.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.3.1]: https://github.com/William-De71/gladys-ginko/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/William-De71/gladys-ginko/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/William-De71/gladys-ginko/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/William-De71/gladys-ginko/releases/tag/v0.1.0

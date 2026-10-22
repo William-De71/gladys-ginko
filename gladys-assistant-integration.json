@@ -8,8 +8,8 @@
     "de": "Busse und Trams in Besançon: Echtzeit-Abfahrten an Ihren Haltestellen und Verkehrslage.",
     "es": "Autobuses y tranvía de Besanzón: pasos en tiempo real en sus paradas y tráfico de líneas."
   },
-  "version": "0.3.0",
-  "docker_image": "ghcr.io/william-de71/gladys-ginko:0.3.0",
+  "version": "0.3.1",
+  "docker_image": "ghcr.io/william-de71/gladys-ginko:0.3.1",
   "gladys_version": ">=5.1.1",
   "categories": ["services"],
   "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-ginko/main/cover.jpg",
