@@ -1615,10 +1615,10 @@
             "es": "Parada"
           },
           "description": {
-            "en": "A stop device of the integration. Leave empty for the first stop.",
-            "fr": "Un appareil arrêt de l’intégration. Laissez vide pour le premier arrêt.",
-            "de": "Ein Haltestellen-Gerät der Integration. Leer lassen für die erste Haltestelle.",
-            "es": "Un dispositivo de parada de la integración. Déjalo vacío para la primera parada."
+            "en": "A stop device of the integration. Leave empty for the first stop, or when you tick devices in “Several stops” below.",
+            "fr": "Un appareil arrêt de l’intégration. Laissez vide pour le premier arrêt, ou si vous cochez des appareils dans « Plusieurs arrêts » ci-dessous.",
+            "de": "Ein Haltestellen-Gerät der Integration. Leer lassen für die erste Haltestelle oder wenn du unten unter „Mehrere Haltestellen“ Geräte ankreuzt.",
+            "es": "Un dispositivo de parada de la integración. Déjalo vacío para la primera parada, o si marcas dispositivos en «Varias paradas» más abajo."
           },
           "required": false
         },
