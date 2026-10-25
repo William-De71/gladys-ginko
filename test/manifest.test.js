@@ -47,7 +47,7 @@ test('declares the cloud transport only: the Ginko API', () => {
 
 test('requires the Gladys of widgets and scenes; no permission', () => {
   assert.equal(manifest.gladys_version, '>=5.1.1');
-  assert.deepEqual(manifest.categories, ['services']);
+  assert.deepEqual(manifest.categories, ['transport']);
   for (const key of ['location', 'network_wake', 'containers', 'network_discovery', 'webhooks']) {
     assert.equal(manifest[key], undefined, key);
   }
