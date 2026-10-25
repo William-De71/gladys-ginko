@@ -10,7 +10,7 @@ It is a **cloud** integration: it contacts `api.ginko.voyage` with your key. Not
 
 ## Prerequisites
 
-- Gladys Assistant 5.1.1 or later.
+- Gladys Assistant 5.3.0 or later.
 - A **Ginko API key**, free: ask for it by e-mail at ginko.support-ssi@keolis.com. To try first, the website [api.ginko.voyage](https://api.ginko.voyage/) gives a temporary key valid for 24 hours (section "Clé temporaire").
 
 ## Configuration

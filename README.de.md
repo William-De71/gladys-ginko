@@ -5,7 +5,7 @@
 [![Lizenz: Apache-2.0](https://img.shields.io/badge/Lizenz-Apache--2.0-blue.svg)](LICENSE)
 [![Neueste Version](https://img.shields.io/github/v/release/William-De71/gladys-ginko?sort=semver)](https://github.com/William-De71/gladys-ginko/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/William-De71/gladys-ginko/release.yml?branch=main&label=CI)](https://github.com/William-De71/gladys-ginko/actions/workflows/release.yml)
-[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.1.1-2f6fb5)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.3.0-2f6fb5)](https://gladysassistant.com)
 
 ![Ginko für Gladys Assistant](cover.jpg)
 
@@ -97,7 +97,7 @@ Beispiele:
 
 ## Voraussetzungen
 
-- Gladys Assistant **5.1.1** oder neuer (Widgets und Szenen-Auslöser externer Integrationen). Ältere Instanzen können die Integration nicht installieren.
+- Gladys Assistant **5.3.0** oder neuer (Widgets und Szenen-Auslöser externer Integrationen, Katalog-Schlagwörter und -Länder von Gladys 5.3). Ältere Instanzen können die Integration nicht installieren.
 - Ein Ginko-API-Schlüssel, kostenlos, per E-Mail bei ginko.support-ssi@keolis.com angefordert (ein temporärer Schlüssel, 24 Stunden gültig, steht zum Ausprobieren auf [api.ginko.voyage](https://api.ginko.voyage/) bereit).
 
 ## Installation

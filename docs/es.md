@@ -10,7 +10,7 @@ Es una integración **cloud**: contacta con `api.ginko.voyage` con tu clave. Nad
 
 ## Requisitos
 
-- Gladys Assistant 5.1.1 o posterior.
+- Gladys Assistant 5.3.0 o posterior.
 - Una **clave de API de Ginko**, gratuita: pídela por correo a ginko.support-ssi@keolis.com. Para probar primero, la web [api.ginko.voyage](https://api.ginko.voyage/) da una clave temporal válida 24 horas (sección «Clé temporaire»).
 
 ## Configuración

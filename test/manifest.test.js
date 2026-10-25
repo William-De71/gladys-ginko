@@ -46,7 +46,7 @@ test('declares the cloud transport only: the Ginko API', () => {
 });
 
 test('requires the Gladys of widgets and scenes; no permission', () => {
-  assert.equal(manifest.gladys_version, '>=5.1.1');
+  assert.equal(manifest.gladys_version, '>=5.3.0');
   assert.deepEqual(manifest.categories, ['transport']);
   for (const key of ['location', 'network_wake', 'containers', 'network_discovery', 'webhooks']) {
     assert.equal(manifest[key], undefined, key);
@@ -163,4 +163,14 @@ test('offers the languages of the code, automatic by default', () => {
   const field = byKey(manifest.config_schema).get('language');
   assert.deepEqual(values(field), [AUTO_LANGUAGE, ...LANGUAGES]);
   assert.equal(field.default, AUTO_LANGUAGE);
+});
+
+test('catalog keywords and countries of Gladys 5.3.0', () => {
+  assert.equal(manifest.gladys_version, '>=5.3.0');
+  const keywords = manifest.keywords.map((keyword) => keyword.trim().toLowerCase());
+  assert.ok(keywords.length >= 1 && keywords.length <= 10, 'one to ten keywords');
+  keywords.forEach((keyword) => assert.ok(keyword.length >= 2 && keyword.length <= 30, keyword));
+  assert.equal(new Set(keywords).size, keywords.length, 'unique once trimmed and lowercased');
+  // Usable in FR only: hidden from the browse views of the catalog elsewhere.
+  assert.deepEqual(manifest.countries, ['FR']);
 });
