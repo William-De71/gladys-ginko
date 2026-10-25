@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.4.0] - 2026-10-25
+
+### Added
+
+- list the integration under the new Transport shelf of the catalog ([505c82e](https://github.com/William-De71/gladys-ginko/commit/505c82e9d14d7b47de3c36788c4ce3b64e071010))
+
 ## [0.3.2] - 2026-10-24
 
 ### Security
@@ -42,6 +48,7 @@ each release from the Conventional Commits: do not edit it by hand.
 - Cloud transport: the open data API of Ginko (a free key), stops read every 30 seconds to 5 minutes, traffic every 5 minutes; lines and stops of the network kept in /data.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.4.0]: https://github.com/William-De71/gladys-ginko/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/William-De71/gladys-ginko/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/William-De71/gladys-ginko/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/William-De71/gladys-ginko/compare/v0.2.0...v0.3.0
